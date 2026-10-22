@@ -1,4 +1,5 @@
 ﻿//Crear la carpeta Datos y definir la ruta de los archivos
+using Microsoft.VisualBasic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 string carpetaProyecto = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../.."));
@@ -17,6 +18,10 @@ string opcion;
 //Crear archivos
 InicializarArchivos(archivoCatalogo, archivoMovimientos);
 
+//Definir los 15 dias contables de la simulacion
+DateTime fechaInicio = new DateTime(2026, 10, 1);
+DateTime fechaFin = fechaInicio.AddDays(14);
+
 do
 {
     MostrarMenu();
@@ -28,7 +33,8 @@ do
         case "1":
             administrarCatalogo();
             break;
-        case "":
+        case "2":
+            registrarMovimientos();
             break;
         case "3":
             break;
@@ -52,6 +58,47 @@ do
     }
 } while (opcion != "9");
 
+void registrarMovimientos()
+{
+
+    Console.WriteLine("\n======== REGISTRO DE MOVIMIENTOS ========");
+
+    string fechaValida = PedirFecha(fechaInicio, fechaFin);
+
+    if (fechaValida == "0")
+    {
+        Console.WriteLine("Registro de movimientos cancelado.");
+        Console.WriteLine("Volviendo al menu principal...");
+        return;
+    }
+}
+
+string PedirFecha(DateTime fechaInicio, DateTime fechaFin)
+{
+    while (true) 
+    { 
+        Console.Write("Ingrese la fecha del movimiento (dd/mm/yyyy) o '0' para cancelar: ");
+        string fechaIngresada = (Console.ReadLine() ?? string.Empty).Trim();
+
+        if (fechaIngresada == "0") return "0";
+        
+
+        if (DateTime.TryParse(fechaIngresada, out DateTime fecha))
+        {
+            if (fecha >= fechaInicio && fecha <= fechaFin)
+            {
+                Console.WriteLine($"Fecha registrada: {fecha.ToString("dd/MM/yyyy")}");
+                return fecha.ToString("dd/MM/yyyy");
+
+            }
+
+            Console.WriteLine($"La fecha debe estar entre {fechaInicio.ToString("dd/MM/yyyy")} y {fechaFin.ToString("dd/MM/yyyy")}.");
+            continue;
+        }
+
+        Console.WriteLine("Fecha inválida. Intente nuevamente.");
+    }
+}
 void administrarCatalogo()
 {
     do
