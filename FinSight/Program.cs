@@ -3,6 +3,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 //Crear la carpeta Datos y definir la ruta de los archivos
 
+﻿//Crear la carpeta Datos y definir la ruta de los archivos
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 string carpetaProyecto = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../.."));
 
 string carpetaDatos = Path.Combine(carpetaProyecto, "Datos");
@@ -42,6 +45,11 @@ do
             break;
         case "4":
             consultarMovimientos();
+        case "":
+            break;
+        case "3":
+            break;
+        case "4":
             break;
         case "5":
             break;
@@ -49,6 +57,10 @@ do
             break;
         case "7":
             Console.WriteLine("Saliendo del programa...");
+            break;
+        case "8":
+            break;
+        case "9":
             break;
         default:
             Console.WriteLine("Opción invalida.");
@@ -94,6 +106,10 @@ void MostrarMenu()
 void administrarCatalogo()
 {
     string opcion = "";
+} while (opcion != "9");
+
+void administrarCatalogo()
+{
     do
     {
         Console.WriteLine("\n====== ADMINISTRACIÓN DEL CATÁLOGO ======");
@@ -106,6 +122,7 @@ void administrarCatalogo()
         Console.WriteLine("=========================================");
         Console.Write("Seleccione una opción: ");
         opcion = (Console.ReadLine() ?? string.Empty).Trim();
+        opcion = (Console.ReadLine() ?? string.Empty).Trim(); 
 
         switch (opcion)
         {
@@ -286,6 +303,63 @@ void BuscarCuenta()
 
     Console.WriteLine("\n===== CUENTA ENCONTRADA =====");
     Console.WriteLine($"| {cuenta[0],-8} | {cuenta[1],-26} | {cuenta[2],-12} | {cuenta[3],-12} |");
+void EliminarCuenta()
+{
+    Console.Write("Ingrese el código de la cuenta a eliminar: ");
+    string codigo = (Console.ReadLine() ?? string.Empty).Trim();
+
+    string[]? cuenta = ObtenerCuenta(opcion);
+
+    if (cuenta == null)
+    {
+        Console.WriteLine("\nCuenta no encontrada.");
+        return;
+    }
+
+    Console.WriteLine($"Cuenta: {cuenta[0]} - {cuenta[1]}");
+    Console.Write("¿Confirma la eliminación? (S/N):  ");
+    string confirmacion = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
+
+    if(confirmacion != "S")
+    {
+        Console.WriteLine("Eliminación cancelada.");
+        return;
+    }
+
+    string temporal = archivoCatalogo + ".tmp";
+    bool eliminada = false;
+
+    using (StreamReader lector = new StreamReader(archivoCatalogo, false))
+    {
+        using (StreamWriter escritor = new StreamWriter(temporal, false))
+        {
+            string? linea;
+            while ((linea = lector.ReadLine()) != null)
+            {
+                string[] datos = linea.Split(';');
+                if (datos.Length == 4 && datos[0] == codigo)
+                {
+                    eliminada = true;
+                    
+                }
+                else
+                {
+                    escritor.WriteLine(linea);
+                }
+            }
+        }
+    }
+
+    if(eliminada)
+    {
+        File.Move(temporal, archivoCatalogo, true);
+        Console.WriteLine("Cuenta eliminada correctamente.");
+    }
+    else
+    {
+        File.Delete(temporal);
+        Console.WriteLine("No se pudo eliminar la cuenta.");
+    }
 }
 void ModificarCuenta()
 {
@@ -310,6 +384,7 @@ void ModificarCuenta()
         return;
     }
 
+       
     if (Nombre == "")
     {
         Nombre = cuenta[1];
@@ -362,6 +437,8 @@ void ModificarCuenta()
             }
         }
 
+        }  
+    
     }
 
     if (modificada)
@@ -382,6 +459,12 @@ void EliminarCuenta()
 
     string[]? cuenta = ObtenerCuenta(codigo);
 
+void BuscarCuenta()
+{
+    Console.Write("\nIngrese el codigo a buscar: ");
+    opcion = (Console.ReadLine() ?? string.Empty).Trim();
+
+    string []? cuenta = ObtenerCuenta(opcion);
     if (cuenta == null)
     {
         Console.WriteLine("\nCuenta no encontrada.");
@@ -773,4 +856,178 @@ void mostrarMovimientosPorCuenta()
     List<string[]> filtrados = todos.FindAll(m => m.Length == 5 && m[1] == codigo);
 
     MostrarTablaMovimientos(filtrados, $"MOVIMIENTOS DE LA CUENTA {codigo}");
+}
+    Console.WriteLine("\n===== CUENTA ENCONTRADA =====");
+    Console.WriteLine($"| {cuenta[0],-8} | {cuenta[1],-26} | {cuenta[2],-12} | {cuenta[3],-12} |");
+}
+void ConsultarCuentas()
+{
+    Console.WriteLine("\n========================= CATALOGO DE CUENTAS =========================");
+    const int ANCHO_CODIGO = 8;
+    const int ANCHO_NOMBRE = 26;
+    const int ANCHO_TIPO = 12;
+    const int ANCHO_NATURALEZA = 12;
+
+    // Longitud de la linea separadora
+    string linea = new string('-', ANCHO_CODIGO + ANCHO_NOMBRE + ANCHO_TIPO + ANCHO_NATURALEZA + 9);
+    Console.WriteLine(linea);
+
+    //mostrar encabezado
+    Console.WriteLine($"| {"Codigo",-ANCHO_CODIGO} | {"Nombre",-ANCHO_NOMBRE} | {"Tipo",-ANCHO_TIPO} | {"Naturaleza",-ANCHO_NATURALEZA} |");
+    Console.WriteLine(linea);
+
+    bool hayCuentas = false;
+
+    using (StreamReader lector = new StreamReader(archivoCatalogo))
+    {
+        string? lineaCuenta;
+        while ((lineaCuenta = lector.ReadLine()) != null)
+        {
+            string[] datos = lineaCuenta.Split(';');
+            if (datos.Length == 4)
+            {
+                // Truncar nombre si es demasiado largo
+                string nombre = datos[1];
+                if (nombre.Length > ANCHO_NOMBRE)
+                {
+                    nombre = nombre.Substring(0, ANCHO_NOMBRE - 3) + "...";
+                }
+
+                Console.WriteLine($"| {datos[0],-ANCHO_CODIGO} | {datos[1],-ANCHO_NOMBRE} | {datos[2],-ANCHO_TIPO} | {datos[3],-ANCHO_NATURALEZA} |");
+                hayCuentas = true;
+            }
+        }
+    }
+    Console.WriteLine(linea);
+
+    if (!hayCuentas)
+        Console.WriteLine("No hay cuentas registradas.");
+    
+}
+void RegistrarCuenta()
+{
+    Console.WriteLine("\n===== REGISTRAR CUENTA =====");
+    Console.Write("Codigo: ");
+    string codigo = (Console.ReadLine() ?? string.Empty).Trim();
+
+    if (codigo == "" || codigo.Contains(';'))
+    {
+        Console.WriteLine("Código inválido");
+        return;
+    }
+
+    if (ObtenerCuenta(codigo) != null)
+    {
+        Console.WriteLine("El código ya existe.");
+        return;
+    }
+
+    Console.Write("Nombre: ");
+    string nombre = (Console.ReadLine() ?? string.Empty).Trim();
+
+    if (nombre == "" || nombre.Contains(';'))
+    {
+        Console.WriteLine("Nombre inválido.");
+        return;
+    }
+
+    string tipo = SeleccionarTipoCuenta();
+    if (tipo == "")
+        return;
+
+    string naturaleza = ObtenerNaturaleza(tipo);
+
+    using (StreamWriter escritor = new StreamWriter(archivoCatalogo, true))
+    {
+        escritor.WriteLine($"{codigo};{nombre};{tipo};{naturaleza}");
+    }
+
+    Console.WriteLine("Cuenta registrada correctamente.");
+}
+string ObtenerNaturaleza(string tipo)
+{
+    if (tipo == "Activo" || tipo == "Costo" || tipo == "Gasto")
+    {
+        return "Deudora";
+    }
+
+    return "Acreedora";
+}
+string SeleccionarTipoCuenta()
+{
+    Console.WriteLine("\nTipo de cuenta:");
+    Console.WriteLine("1. Activo");
+    Console.WriteLine("2. Pasivo");
+    Console.WriteLine("3. Patrimonio");
+    Console.WriteLine("4. Ingreso");
+    Console.WriteLine("5. Costo");
+    Console.WriteLine("6. Gasto");
+    Console.Write("Ingrese el tipo de cuenta: ");
+    string opcion = Console.ReadLine() ?? "";
+
+    switch (opcion)
+    {
+        case "1": return "Activo";
+        case "2": return "Pasivo";
+        case "3": return "Patrimonio";
+        case "4": return "Ingreso";
+        case "5": return "Costo";
+        case "6": return "Gasto";
+        default:
+            Console.WriteLine("Tipo no válido.");
+            return "";
+    }
+}
+string[]? ObtenerCuenta(string codigo)
+{
+    using (StreamReader lector = new StreamReader(archivoCatalogo))
+    {
+        string? linea;
+
+        while ((linea = lector.ReadLine()) != null)
+        {
+            string[] datos = linea.Split(';');
+
+            if (datos.Length == 4 && datos[0] == codigo)
+            {
+                return datos;
+            }
+        }
+    }
+    return null;
+}
+void MostrarMenu()
+{
+    Console.WriteLine("\n========================================");
+    Console.WriteLine("            SISTEMA CONTABLE            ");
+    Console.WriteLine("========================================");
+    Console.WriteLine("1. Administrar catálogo de cuentas");
+    Console.WriteLine("2. Registrar movimiento contable");
+    Console.WriteLine("3. Consultar catálogo de cuentas");
+    Console.WriteLine("4. Consultar movimientos ");
+    Console.WriteLine("5. Estado de Resultados");
+    Console.WriteLine("6. Estado de Situación Financiera");
+    Console.WriteLine("7. Estado de Cambios en el Patrimonio");
+    Console.WriteLine("8. Estado de Flujos de Efectivo");
+    Console.WriteLine("9. Salir");
+    Console.WriteLine("========================================");
+    Console.Write("Seleccione una opción: ");
+}
+void InicializarArchivos(string archivoCatalogo, string archivoMovimientos)
+{
+    if (!File.Exists(archivoCatalogo))
+    {
+        using(StreamWriter escritor = new StreamWriter(archivoCatalogo, false))
+        {
+            escritor.WriteLine("Codigo;Nombre;Tipo;Naturaleza");
+        }
+    }
+
+    if (!File.Exists(archivoMovimientos))
+    {
+        using (StreamWriter escritor = new StreamWriter(archivoMovimientos, false))
+        {
+            escritor.WriteLine("Fecha;CodigoCuenta;Descripcion;Debe;Haber");
+        }
+    }
 }
