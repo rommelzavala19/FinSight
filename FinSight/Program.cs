@@ -38,13 +38,16 @@ do
             registrarMovimientos();
             break;
         case "3":
-            consultarMovimientos();
+            ConsultarCuentas();
             break;
         case "4":
+            consultarMovimientos();
             break;
         case "5":
             break;
         case "6":
+            break;
+        case "7":
             Console.WriteLine("Saliendo del programa...");
             break;
         default:
@@ -53,7 +56,7 @@ do
             Console.ReadKey();
             break;
     }
-} while (opcion != "6");
+} while (opcion != "7");
 
 void InicializarArchivos(string archivoCatalogo, string archivoMovimientos)
 {
@@ -83,12 +86,14 @@ void MostrarMenu()
     Console.WriteLine("3. Consultar catálogo de cuentas");
     Console.WriteLine("4. Consultar movimientos ");
     Console.WriteLine("5. Estado de Resultados");
-    Console.WriteLine("6. Salir");
+    Console.WriteLine("6. Estado de Situación Financiera");
+    Console.WriteLine("7. Salir");
     Console.WriteLine("========================================");
     Console.Write("Seleccione una opción: ");
 }
 void administrarCatalogo()
 {
+    string opcion = "";
     do
     {
         Console.WriteLine("\n====== ADMINISTRACIÓN DEL CATÁLOGO ======");
@@ -100,7 +105,7 @@ void administrarCatalogo()
         Console.WriteLine("6. Volver");
         Console.WriteLine("=========================================");
         Console.Write("Seleccione una opción: ");
-        string opcion = (Console.ReadLine() ?? string.Empty).Trim();
+        opcion = (Console.ReadLine() ?? string.Empty).Trim();
 
         switch (opcion)
         {
@@ -169,6 +174,24 @@ void RegistrarCuenta()
     }
 
     Console.WriteLine("Cuenta registrada correctamente.");
+}
+string[]? ObtenerCuenta(string codigo)
+{
+    using (StreamReader lector = new StreamReader(archivoCatalogo))
+    {
+        string? linea;
+
+        while ((linea = lector.ReadLine()) != null)
+        {
+            string[] datos = linea.Split(';');
+
+            if (datos.Length == 4 && datos[0] == codigo)
+            {
+                return datos;
+            }
+        }
+    }
+    return null;
 }
 string SeleccionarTipoCuenta()
 {
@@ -575,51 +598,179 @@ string PedirConcepto()
 }
 void consultarMovimientos()
 {
+    string opcion = "";
+
     do
     {
         Console.WriteLine("\n======== CONSULTA DE MOVIMIENTOS ========");
-        Console.WriteLine("1. Ver todos los movimientos");
-        Console.WriteLine("2. Ver movimientos por fecha");
-        Console.WriteLine("3. Ver movimientos por cuenta");
+        Console.WriteLine("1. Consultar todos los movimientos");
+        Console.WriteLine("2. Consultar movimientos por fecha");
+        Console.WriteLine("3. Consultar movimientos por cuenta");
         Console.WriteLine("4. Volver");
         Console.WriteLine("=========================================");
         Console.Write("Seleccione una opción: ");
-        string opcion = (Console.ReadLine() ?? string.Empty).Trim(); 
+        opcion = (Console.ReadLine() ?? string.Empty).Trim();
 
-    } while (opcion != "4");
+        switch (opcion)
+        {
+            case "1":
+                mostrarLosMovimientos();
+                break;
+            case "2":
+                mostrarMovimientosPorFecha();
+                break;
+            case "3":
+                mostrarMovimientosPorCuenta();
+                break;
+            case "4":
+                Console.WriteLine("Regresando al menú principal...");
+                break;
+            default:
+                Console.WriteLine("Opción invalida.");
+                Console.WriteLine("Presione cualquier tecla para continuar...");
+                Console.ReadKey();
+                break;
+            }
 
+
+        } while (opcion != "4");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-string[]? ObtenerCuenta(string codigo)
+List<string[]> LeerTodosLosMovimientos()
 {
-    using (StreamReader lector = new StreamReader(archivoCatalogo))
-    {
-        string? linea;
+    List<string[]> lista = new List<string[]>();
+    if (!File.Exists(archivoMovimientos)) return lista;
 
+    using (StreamReader lector = new StreamReader(archivoMovimientos))
+    {
+        lector.ReadLine();
+        string? linea;
         while ((linea = lector.ReadLine()) != null)
         {
             string[] datos = linea.Split(';');
-
-            if (datos.Length == 4 && datos[0] == codigo)
+            if (datos.Length == 5)
             {
-                return datos;
+                lista.Add(datos);
             }
         }
     }
-    return null;
+    return lista;
 }
+(int inicio, int fin) BusquedaBinariaPorFecha(List<string[]> movimientos, DateTime fechaBuscada)
+{
+    int izq = 0;
+    int der = movimientos.Count - 1;
+    int medioEncontrado = -1;
 
+    while (izq <= der)
+    {
+        int medio = izq + (der - izq) / 2;
 
+        if (DateTime.TryParse(movimientos[medio][0], out DateTime fechaMedio))
+        {
+            if (fechaMedio.Date == fechaBuscada.Date)
+            {
+                medioEncontrado = medio;
+                break;
+            }
+            else if (fechaMedio.Date < fechaBuscada.Date)
+            {
+                izq = medio + 1;
+            }
+            else
+            {
+                der = medio - 1;
+            }
+        }
+    }
+
+    if (medioEncontrado == -1) return (-1, -1);
+
+    int inicio = medioEncontrado;
+    while (inicio > 0 && DateTime.TryParse(movimientos[inicio - 1][0], out DateTime fPrev) && fPrev.Date == fechaBuscada.Date)
+    {
+        inicio--;
+    }
+
+    int fin = medioEncontrado;
+    while (fin < movimientos.Count - 1 && DateTime.TryParse(movimientos[fin + 1][0], out DateTime fNext) && fNext.Date == fechaBuscada.Date)
+    {
+        fin++;
+    }
+
+    return (inicio, fin);
+}
+void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
+{
+    if (movimientos == null || movimientos.Count == 0)
+    {
+        Console.WriteLine($"\nNo se encontraron movimientos para: {titulo}");
+        return;
+    }
+
+    const int ANCHO_FECHA = 10;
+    const int ANCHO_CUENTA = 10;
+    const int ANCHO_DEBE = 14;
+    const int ANCHO_HABER = 14;
+    const int ANCHO_CONCEPTO = 25;
+
+    string linea = new string('-', ANCHO_FECHA + ANCHO_CUENTA + ANCHO_DEBE + ANCHO_HABER + ANCHO_CONCEPTO + 13);
+
+    Console.WriteLine($"\n================================ {titulo.ToUpper()} ================================");
+    Console.WriteLine(linea);
+    Console.WriteLine($"| {"Fecha",-ANCHO_FECHA} | {"Cuenta",-ANCHO_CUENTA} | {"Debe",-ANCHO_DEBE} | {"Haber",-ANCHO_HABER} | {"Concepto",-ANCHO_CONCEPTO} |");
+    Console.WriteLine(linea);
+
+    foreach (var datos in movimientos)
+    {
+        if (datos.Length == 5)
+        {
+            decimal.TryParse(datos[2], out decimal debe);
+            decimal.TryParse(datos[3], out decimal haber);
+
+            string strDebe = $"C$ {debe:N2}";
+            string strHaber = $"C$ {haber:N2}";
+
+            string concepto = datos[4];
+            if (concepto.Length > ANCHO_CONCEPTO)
+            {
+                concepto = concepto.Substring(0, ANCHO_CONCEPTO - 3) + "...";
+            }
+
+            Console.WriteLine($"| {datos[0],-ANCHO_FECHA} | {datos[1],-ANCHO_CUENTA} | {strDebe,ANCHO_DEBE} | {strHaber,ANCHO_HABER} | {concepto,-ANCHO_CONCEPTO} |");
+        }
+    }
+
+    Console.WriteLine(linea);
+}
+void mostrarLosMovimientos()
+{
+    List<string[]> lista = LeerTodosLosMovimientos();
+    MostrarTablaMovimientos(lista, "TODOS LOS MOVIMIENTOS");
+}
+void mostrarMovimientosPorFecha() 
+{
+    string fecha = PedirFecha(fechaInicio, fechaFin);
+    if (fecha == "") return;
+
+    List<string[]> todos = LeerTodosLosMovimientos();
+    var (inicio, fin) = BusquedaBinariaPorFecha(todos, DateTime.Parse(fecha));
+
+    if (inicio == -1)
+    {
+        Console.WriteLine($"\nNo se encontraron movimientos para la fecha {fecha}.");
+        return;
+    }
+
+    List<string[]> resultado = todos.GetRange(inicio, fin - inicio + 1);
+    MostrarTablaMovimientos(resultado, $"MOVIMIENTOS DEL {fecha}");
+}
+void mostrarMovimientosPorCuenta()
+{
+    string codigo = PedirCodigocuenta();
+    if (codigo == "") return;
+
+    List<string[]> todos = LeerTodosLosMovimientos();
+    List<string[]> filtrados = todos.FindAll(m => m.Length == 5 && m[1] == codigo);
+
+    MostrarTablaMovimientos(filtrados, $"MOVIMIENTOS DE LA CUENTA {codigo}");
+}
