@@ -10,7 +10,7 @@ string carpetaDatos = Path.Combine(carpetaProyecto, "Datos");
 Directory.CreateDirectory(carpetaDatos);
 
 //Inicializacion de los archivos
-string archivoCatalogo = Path.Combine(carpetaDatos, "catalogo.csv");
+string archivoCatalogo = Path.Combine(carpetaDatos, "cuentas.csv");
 string archivoMovimientos = Path.Combine(carpetaDatos, "movimientos.csv");
 
 //Variable global
