@@ -657,13 +657,13 @@ List<string[]> LeerTodosLosMovimientos()
 }
 (int inicio, int fin) BusquedaBinariaPorFecha(List<string[]> movimientos, DateTime fechaBuscada)
 {
-    int izq = 0;
-    int der = movimientos.Count - 1;
+    int izquierda = 0;
+    int derecha = movimientos.Count - 1;
     int medioEncontrado = -1;
 
-    while (izq <= der)
+    while (izquierda <= derecha)
     {
-        int medio = izq + (der - izq) / 2;
+        int medio = izquierda + (derecha - izquierda) / 2;
 
         if (DateTime.TryParse(movimientos[medio][0], out DateTime fechaMedio))
         {
@@ -674,11 +674,11 @@ List<string[]> LeerTodosLosMovimientos()
             }
             else if (fechaMedio.Date < fechaBuscada.Date)
             {
-                izq = medio + 1;
+                izquierda = medio + 1;
             }
             else
             {
-                der = medio - 1;
+                derecha = medio - 1;
             }
         }
     }
@@ -727,8 +727,8 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
             decimal.TryParse(datos[2], out decimal debe);
             decimal.TryParse(datos[3], out decimal haber);
 
-            string strDebe = $"C$ {debe:N2}";
-            string strHaber = $"C$ {haber:N2}";
+            string Debe = $"C$ {debe:N2}";
+            string Haber = $"C$ {haber:N2}";
 
             string concepto = datos[4];
             if (concepto.Length > ANCHO_CONCEPTO)
@@ -736,7 +736,7 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
                 concepto = concepto.Substring(0, ANCHO_CONCEPTO - 3) + "...";
             }
 
-            Console.WriteLine($"| {datos[0],-ANCHO_FECHA} | {datos[1],-ANCHO_CUENTA} | {strDebe,ANCHO_DEBE} | {strHaber,ANCHO_HABER} | {concepto,-ANCHO_CONCEPTO} |");
+            Console.WriteLine($"| {datos[0],-ANCHO_FECHA} | {datos[1],-ANCHO_CUENTA} | {Debe,ANCHO_DEBE} | {Haber,ANCHO_HABER} | {concepto,-ANCHO_CONCEPTO} |");
         }
     }
 
