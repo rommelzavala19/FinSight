@@ -290,9 +290,9 @@ void BuscarCuenta()
 void ModificarCuenta()
 {
     Console.Write("Ingrese el codigo de la cuenta a modificar: ");
-    opcion = (Console.ReadLine() ?? string.Empty).Trim();
+    string codigo = (Console.ReadLine() ?? string.Empty).Trim();
 
-    string[]? cuenta = ObtenerCuenta(opcion);
+    string[]? cuenta = ObtenerCuenta(codigo);
 
     if (cuenta == null)
     {
@@ -350,9 +350,9 @@ void ModificarCuenta()
             while ((linea = lector.ReadLine()) != null)
             {
                 string[] datos = linea.Split(';');
-                if (datos.Length == 4 && datos[0] == opcion)
+                if (datos.Length == 4 && datos[0] == codigo)
                 {
-                    escritor.WriteLine($"{opcion};{Nombre};{tipo};{naturaleza}");
+                    escritor.WriteLine($"{codigo};{Nombre};{tipo};{naturaleza}");
                     modificada = true;
                 }
                 else
@@ -477,7 +477,7 @@ void registrarMovimientos()
 
     using (StreamWriter escritor = new StreamWriter(archivoMovimientos, true))
     {
-        escritor.WriteLine($"{fechaValida};{codigoCuenta};{tipo};{monto};{concepto}");
+        escritor.WriteLine($"{fechaValida};{codigoCuenta};{debe};{haber};{concepto}");
     }
 
     Console.WriteLine("\n¡Movimiento registrado con éxito!");
@@ -521,8 +521,9 @@ string PedirCodigocuenta()
     if (datosCuenta != null)
     {
         // datosCuenta[0] = Código, datosCuenta[1] = Nombre
-        Console.WriteLine($"Cuenta seleccionada: {datosCuenta[0]} - {datosCuenta[1]}");
-        return datosCuenta[0];
+        string cuentaJunta = $"{datosCuenta[0]} - {datosCuenta[1]}";
+        Console.WriteLine($"Cuenta seleccionada: {cuentaJunta}");
+        return cuentaJunta;
     }
 
     Console.WriteLine($"El código '{codigo}' no existe en el catálogo.");
@@ -638,11 +639,14 @@ void consultarMovimientos()
 List<string[]> LeerTodosLosMovimientos()
 {
     List<string[]> lista = new List<string[]>();
+
     if (!File.Exists(archivoMovimientos)) return lista;
 
     using (StreamReader lector = new StreamReader(archivoMovimientos))
     {
+        //descartamos la primera linea de encabezado
         lector.ReadLine();
+
         string? linea;
         while ((linea = lector.ReadLine()) != null)
         {
@@ -708,7 +712,7 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
     }
 
     const int ANCHO_FECHA = 10;
-    const int ANCHO_CUENTA = 10;
+    const int ANCHO_CUENTA = 22;
     const int ANCHO_DEBE = 14;
     const int ANCHO_HABER = 14;
     const int ANCHO_CONCEPTO = 25;
@@ -729,7 +733,15 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
 
             string Debe = $"C$ {debe:N2}";
             string Haber = $"C$ {haber:N2}";
+            
+            //Truncar la cuenta si es demasiado larga
+            string cuenta = datos[1];
+            if (cuenta.Length > ANCHO_CUENTA)
+            {
+                cuenta = cuenta.Substring(0, ANCHO_CUENTA - 3) + "...";
+            }
 
+            //Truncar concepto si es demasiado largo
             string concepto = datos[4];
             if (concepto.Length > ANCHO_CONCEPTO)
             {
@@ -770,7 +782,15 @@ void mostrarMovimientosPorCuenta()
     if (codigo == "") return;
 
     List<string[]> todos = LeerTodosLosMovimientos();
-    List<string[]> filtrados = todos.FindAll(m => m.Length == 5 && m[1] == codigo);
+    List<string[]> filtrados = new List<string[]>();
+
+    foreach (string[] m in todos)
+    {
+        if (m.Length == 5 && m[1].StartsWith(codigo))
+        {
+            filtrados.Add(m);
+        }
+    }
 
     MostrarTablaMovimientos(filtrados, $"MOVIMIENTOS DE LA CUENTA {codigo}");
 }
