@@ -1,11 +1,16 @@
-﻿using Microsoft.VisualBasic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿   
 
 //Crear la carpeta Datos y definir la ruta de los archivos
 
 string carpetaProyecto = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../.."));
 
 string carpetaDatos = Path.Combine(carpetaProyecto, "Datos");
+
+string archivoLibroMayor = Path.Combine(carpetaDatos, "libro_mayor.csv");
+
+string archivoEstadoResultados = Path.Combine(carpetaDatos, "estado_resultados.csv");
+
+string archivoBalanceGeneral = Path.Combine(carpetaDatos, "balance_general.csv");
 
 Directory.CreateDirectory(carpetaDatos);
 
@@ -15,6 +20,15 @@ string archivoMovimientos = Path.Combine(carpetaDatos, "movimientos.csv");
 
 //Variable global
 string opcion;
+
+// Libro mayor (listas paralelas)
+List<string> mayorCodigo = new List<string>();
+List<string> mayorNombre = new List<string>();
+List<string> mayorTipo = new List<string>();
+List<string> mayorNaturaleza = new List<string>();
+List<decimal> mayorDebe = new List<decimal>();
+List<decimal> mayorHaber = new List<decimal>();
+List<decimal> mayorSaldo = new List<decimal>();
 
 //Crear archivos
 InicializarArchivos(archivoCatalogo, archivoMovimientos);
@@ -44,8 +58,10 @@ do
             consultarMovimientos();
             break;
         case "5":
+            EstadoResultados();
             break;
         case "6":
+            EstadoSituacionFinanciera();
             break;
         case "7":
             Console.WriteLine("Saliendo del programa...");
@@ -793,4 +809,361 @@ void mostrarMovimientosPorCuenta()
     }
 
     MostrarTablaMovimientos(filtrados, $"MOVIMIENTOS DE LA CUENTA {codigo}");
+}
+
+// ================= LIBRO MAYOR =================
+
+string ExtraerCodigo(string cuentaJunta)
+{
+    int posicion = cuentaJunta.IndexOf(" - ");
+
+    if (posicion == -1)
+        return cuentaJunta.Trim();
+
+    return cuentaJunta.Substring(0, posicion).Trim();
+}
+
+void LimpiarMayor()
+{
+    mayorCodigo.Clear();
+    mayorNombre.Clear();
+    mayorTipo.Clear();
+    mayorNaturaleza.Clear();
+    mayorDebe.Clear();
+    mayorHaber.Clear();
+    mayorSaldo.Clear();
+}
+
+int CargarCatalogoEnMayor()
+{
+    if (!File.Exists(archivoCatalogo)) return 0;
+
+    using (StreamReader lector = new StreamReader(archivoCatalogo))
+    {
+        lector.ReadLine(); // encabezado
+
+        string? linea;
+        while ((linea = lector.ReadLine()) != null)
+        {
+            string[] datos = linea.Split(';');
+
+            if (datos.Length == 4)
+            {
+                mayorCodigo.Add(datos[0]);
+                mayorNombre.Add(datos[1]);
+                mayorTipo.Add(datos[2]);
+                mayorNaturaleza.Add(datos[3]);
+                mayorDebe.Add(0);
+                mayorHaber.Add(0);
+                mayorSaldo.Add(0);
+            }
+        }
+    }
+    return mayorCodigo.Count;
+}
+
+int BuscarIndiceCuenta(string codigo)
+{
+    for (int i = 0; i < mayorCodigo.Count; i++)
+    {
+        if (mayorCodigo[i] == codigo) return i;
+    }
+    return -1;
+}
+
+// Devuelve "" si el movimiento es válido; si no, el mensaje del error
+string ValidarMovimiento(string[] mov, out int indice, out decimal debe, out decimal haber)
+{
+    indice = -1;
+    debe = 0;
+    haber = 0;
+
+    if (mov.Length != 5)
+        return "formato incorrecto";
+
+    string codigo = ExtraerCodigo(mov[1]);
+    indice = BuscarIndiceCuenta(codigo);
+    if (indice == -1)
+        return $"la cuenta '{codigo}' no existe en el catálogo";
+
+    if (!decimal.TryParse(mov[2], out debe) || !decimal.TryParse(mov[3], out haber))
+        return "Debe o Haber no son números";
+
+    if (debe < 0 || haber < 0)
+        return "hay montos negativos";
+
+    if ((debe == 0 && haber == 0) || (debe > 0 && haber > 0))
+        return "debe tener monto solo en Debe o solo en Haber";
+
+    return "";
+}
+
+decimal CalcularSaldo(string naturaleza, decimal debe, decimal haber)
+{
+    if (naturaleza == "Deudora")
+        return debe - haber;
+
+    return haber - debe;
+}
+
+void CalcularSaldosFinales()
+{
+    for (int i = 0; i < mayorCodigo.Count; i++)
+    {
+        mayorSaldo[i] = CalcularSaldo(mayorNaturaleza[i], mayorDebe[i], mayorHaber[i]);
+    }
+}
+
+void GuardarCsv(string ruta, List<string> lineas)
+{
+    if (string.IsNullOrWhiteSpace(ruta) || lineas.Count <= 1)
+    {
+        Console.WriteLine("No hay datos para guardar.");
+        return;
+    }
+
+    try
+    {
+        using (StreamWriter escritor = new StreamWriter(ruta, false))
+        {
+            for (int i = 0; i < lineas.Count; i++)
+            {
+                escritor.WriteLine(lineas[i]);
+            }
+        }
+        Console.WriteLine($"Archivo guardado: {Path.GetFileName(ruta)}");
+    }
+    catch (IOException)
+    {
+        Console.WriteLine($"No se pudo guardar {Path.GetFileName(ruta)}. Si está abierto en Excel, ciérralo.");
+    }
+}
+
+void GuardarLibroMayorCsv()
+{
+    List<string> lineas = new List<string>();
+    lineas.Add("Codigo;Cuenta;Tipo;Naturaleza;Debe;Haber;Saldo");
+
+    for (int i = 0; i < mayorCodigo.Count; i++)
+    {
+        lineas.Add($"{mayorCodigo[i]};{mayorNombre[i]};{mayorTipo[i]};{mayorNaturaleza[i]};{mayorDebe[i]:0.00};{mayorHaber[i]:0.00};{mayorSaldo[i]:0.00}");
+    }
+
+    GuardarCsv(archivoLibroMayor, lineas);
+}
+
+// Calcula el libro mayor y lo guarda en libro_mayor.csv.
+
+bool CalcularLibroMayor()
+{
+    LimpiarMayor();
+
+    if (CargarCatalogoEnMayor() == 0)
+    {
+        Console.WriteLine("\nNo hay cuentas en el catálogo.");
+        return false;
+    }
+
+    List<string[]> movimientos = LeerTodosLosMovimientos();
+    if (movimientos.Count == 0)
+    {
+        Console.WriteLine("\nNo hay movimientos registrados.");
+        return false;
+    }
+
+    decimal totalDebe = 0;
+    decimal totalHaber = 0;
+
+    for (int i = 0; i < movimientos.Count; i++)
+    {
+        string error = ValidarMovimiento(movimientos[i], out int indice, out decimal debe, out decimal haber);
+        if (error != "")
+        {
+            Console.WriteLine($"\nMovimiento #{i + 1} inválido: {error}.");
+            return false;
+        }
+
+        mayorDebe[indice] += debe;
+        mayorHaber[indice] += haber;
+        totalDebe += debe;
+        totalHaber += haber;
+    }
+
+    if (totalDebe != totalHaber)
+    {
+        Console.WriteLine($"\nNo se pueden generar los estados: Debe (C$ {totalDebe:N2}) y Haber (C$ {totalHaber:N2}) no cuadran.");
+        return false;
+    }
+
+    CalcularSaldosFinales();
+    GuardarLibroMayorCsv();
+    return true;
+}
+
+// ================= CÁLCULOS PARA LOS ESTADOS =================
+
+decimal TotalPorTipo(string tipo)
+{
+    decimal total = 0;
+
+    for (int i = 0; i < mayorTipo.Count; i++)
+    {
+        if (mayorTipo[i] == tipo) total += mayorSaldo[i];
+    }
+    return total;
+}
+
+decimal CalcularUtilidadOperacion()
+{
+    return TotalPorTipo("Ingreso") - TotalPorTipo("Costo") - TotalPorTipo("Gasto");
+}
+
+// El IR solo se calcula si hay utilidad (si hay pérdida es 0)
+decimal CalcularIR(decimal utilidadOperacion)
+{
+    const decimal TASA_IR = 0.30m;
+
+    if (utilidadOperacion <= 0)
+        return 0;
+
+    return Math.Round(utilidadOperacion * TASA_IR, 2);
+}
+
+// ================= ESTADO DE RESULTADOS =================
+
+void MostrarEstadoResultados
+    (decimal ventasNetas, decimal costoVendido, decimal utilidadBruta,
+                             decimal gastosOperacion, decimal utilidadOperacion,
+                             decimal impuesto, decimal utilidadNeta)
+{
+    Console.Clear();
+
+    Console.WriteLine("========================================================");
+    Console.WriteLine("                   Fashion American                     ");
+    Console.WriteLine("                ESTADO DE RESULTADOS                    ");
+    Console.WriteLine($"         Del {fechaInicio:dd/MM/yyyy} al {fechaFin:dd/MM/yyyy}");
+    Console.WriteLine("========================================================");
+    Console.WriteLine();
+
+    Console.WriteLine($"VENTAS NETAS.................... C$ {ventasNetas,12:N2}");
+    Console.WriteLine();
+    Console.WriteLine($"(-) COSTO DE LO VENDIDO......... C$ {costoVendido,12:N2}");
+    Console.WriteLine("--------------------------------------------------------");
+    Console.WriteLine($"UTILIDAD BRUTA.................. C$ {utilidadBruta,12:N2}");
+    Console.WriteLine();
+    Console.WriteLine("GASTOS DE OPERACION");
+    Console.WriteLine($"   Gastos Registrados........... C$ {gastosOperacion,12:N2}");
+    Console.WriteLine("--------------------------------------------------------");
+    Console.WriteLine($"UTILIDAD DE OPERACION........... C$ {utilidadOperacion,12:N2}");
+    Console.WriteLine();
+    Console.WriteLine($"(-) IR (30%).................... C$ {impuesto,12:N2}");
+    Console.WriteLine("--------------------------------------------------------");
+    Console.WriteLine($"UTILIDAD NETA DEL EJERCICIO..... C$ {utilidadNeta,12:N2}");
+    Console.WriteLine();
+    Console.WriteLine("========================================================");
+}
+
+void GuardarEstadoResultadosCsv(decimal ventasNetas, decimal costoVendido, decimal utilidadBruta,
+                                decimal gastosOperacion, decimal utilidadOperacion,
+                                decimal impuesto, decimal utilidadNeta)
+{
+    List<string> lineas = new List<string>();
+    lineas.Add("VentasNetas;CostoVendido;UtilidadBruta;GastosOperacion;UtilidadOperacion;IR;UtilidadNeta");
+    lineas.Add($"{ventasNetas:0.00};{costoVendido:0.00};{utilidadBruta:0.00};{gastosOperacion:0.00};{utilidadOperacion:0.00};{impuesto:0.00};{utilidadNeta:0.00}");
+
+    GuardarCsv(archivoEstadoResultados, lineas);
+}
+
+void EstadoResultados()
+{
+    if (!CalcularLibroMayor()) return;
+
+    decimal ventasNetas = TotalPorTipo("Ingreso");
+    decimal costoVendido = TotalPorTipo("Costo");
+    decimal gastosOperacion = TotalPorTipo("Gasto");
+
+    decimal utilidadBruta = ventasNetas - costoVendido;
+    decimal utilidadOperacion = utilidadBruta - gastosOperacion;
+    decimal impuesto = CalcularIR(utilidadOperacion);
+    decimal utilidadNeta = utilidadOperacion - impuesto;
+
+    MostrarEstadoResultados(ventasNetas, costoVendido, utilidadBruta, gastosOperacion,
+                            utilidadOperacion, impuesto, utilidadNeta);
+
+    GuardarEstadoResultadosCsv(ventasNetas, costoVendido, utilidadBruta, gastosOperacion,
+                               utilidadOperacion, impuesto, utilidadNeta);
+}
+
+// ================= ESTADO DE SITUACIÓN FINANCIERA (BALANCE GENERAL) =================
+
+// Muestra las cuentas de un tipo (solo las que tienen movimientos) y devuelve su total
+decimal MostrarSeccion(string titulo, string tipo, List<string> csv)
+{
+    Console.WriteLine($"\n{titulo}");
+    decimal total = 0;
+
+    for (int i = 0; i < mayorCodigo.Count; i++)
+    {
+        if (mayorTipo[i] == tipo && (mayorDebe[i] != 0 || mayorHaber[i] != 0))
+        {
+            Console.WriteLine($"   {mayorNombre[i],-30} C$ {mayorSaldo[i],12:N2}");
+            csv.Add($"{titulo};{mayorNombre[i]};{mayorSaldo[i]:0.00}");
+            total += mayorSaldo[i];
+        }
+    }
+
+    string etiqueta = "TOTAL " + titulo;
+    Console.WriteLine($"   {etiqueta,-30} C$ {total,12:N2}");
+    csv.Add($"{titulo};{etiqueta};{total:0.00}");
+    return total;
+}
+
+void MostrarLineaBalance(string seccion, string etiqueta, decimal monto, List<string> csv)
+{
+    Console.WriteLine($"   {etiqueta,-30} C$ {monto,12:N2}");
+    csv.Add($"{seccion};{etiqueta};{monto:0.00}");
+}
+
+void VerificarEcuacionContable(decimal activo, decimal pasivoMasPatrimonio)
+{
+    if (activo == pasivoMasPatrimonio)
+        Console.WriteLine("\nEl balance cuadra: ACTIVO = PASIVO + PATRIMONIO.");
+    else
+        Console.WriteLine($"\nATENCION: el balance no cuadra. Diferencia = C$ {activo - pasivoMasPatrimonio:N2}");
+}
+
+void EstadoSituacionFinanciera()
+{
+    if (!CalcularLibroMayor()) return;
+
+    List<string> csv = new List<string>();
+    csv.Add("Seccion;Cuenta;Monto");
+
+    Console.Clear();
+    Console.WriteLine("========================================================");
+    Console.WriteLine("                   Fashion American                     ");
+    Console.WriteLine("             ESTADO DE SITUACION FINANCIERA             ");
+    Console.WriteLine($"                   Al {fechaFin:dd/MM/yyyy}");
+    Console.WriteLine("========================================================");
+
+    decimal activo = MostrarSeccion("ACTIVO", "Activo", csv);
+    decimal pasivo = MostrarSeccion("PASIVO", "Pasivo", csv);
+    decimal patrimonio = MostrarSeccion("PATRIMONIO", "Patrimonio", csv);
+
+    decimal utilidadOperacion = CalcularUtilidadOperacion();
+    decimal impuesto = CalcularIR(utilidadOperacion);
+    decimal utilidadNeta = utilidadOperacion - impuesto;
+
+    Console.WriteLine("\nRESULTADO DEL EJERCICIO");
+    MostrarLineaBalance("RESULTADO", "IR por pagar", impuesto, csv);
+    MostrarLineaBalance("RESULTADO", "Utilidad neta del ejercicio", utilidadNeta, csv);
+
+    decimal pasivoMasPatrimonio = pasivo + patrimonio + impuesto + utilidadNeta;
+    Console.WriteLine("\n--------------------------------------------------------");
+    MostrarLineaBalance("TOTALES", "TOTAL ACTIVO", activo, csv);
+    MostrarLineaBalance("TOTALES", "PASIVO + PATRIMONIO", pasivoMasPatrimonio, csv);
+    Console.WriteLine("========================================================");
+
+    VerificarEcuacionContable(activo, pasivoMasPatrimonio);
+    GuardarCsv(archivoBalanceGeneral, csv);
 }
