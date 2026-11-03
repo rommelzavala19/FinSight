@@ -1,22 +1,16 @@
-﻿   
+﻿using System.Globalization;
 
 //Crear la carpeta Datos y definir la ruta de los archivos
-
 string carpetaProyecto = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../.."));
-
 string carpetaDatos = Path.Combine(carpetaProyecto, "Datos");
-
-string archivoLibroMayor = Path.Combine(carpetaDatos, "libro_mayor.csv");
-
-string archivoEstadoResultados = Path.Combine(carpetaDatos, "estado_resultados.csv");
-
-string archivoBalanceGeneral = Path.Combine(carpetaDatos, "balance_general.csv");
-
 Directory.CreateDirectory(carpetaDatos);
 
 //Inicializacion de los archivos
 string archivoCatalogo = Path.Combine(carpetaDatos, "cuentas.csv");
 string archivoMovimientos = Path.Combine(carpetaDatos, "movimientos.csv");
+string archivoLibroMayor = Path.Combine(carpetaDatos, "libro_mayor.csv");
+string archivoEstadoResultados = Path.Combine(carpetaDatos, "estado_resultados.csv");
+string archivoBalanceGeneral = Path.Combine(carpetaDatos, "balance_general.csv");
 
 //Variable global
 string opcion;
@@ -31,11 +25,7 @@ List<decimal> mayorHaber = new List<decimal>();
 List<decimal> mayorSaldo = new List<decimal>();
 
 //Crear archivos
-InicializarArchivos(archivoCatalogo, archivoMovimientos);
-
-//Definir los 15 dias contables de la simulacion
-DateTime fechaInicio = new DateTime(2026, 10, 1);
-DateTime fechaFin = fechaInicio.AddDays(14);
+InicializarArchivos(archivoCatalogo, archivoMovimientos, archivoLibroMayor, archivoEstadoResultados, archivoBalanceGeneral);
 
 do
 {
@@ -74,7 +64,7 @@ do
     }
 } while (opcion != "7");
 
-void InicializarArchivos(string archivoCatalogo, string archivoMovimientos)
+void InicializarArchivos(string archivoCatalogo, string archivoMovimientos, string archivoLibroMayor, string archivoEstadoResultados, string archivoBalanceGeneral)
 {
     if (!File.Exists(archivoCatalogo))
     {
@@ -89,6 +79,30 @@ void InicializarArchivos(string archivoCatalogo, string archivoMovimientos)
         using (StreamWriter escritor = new StreamWriter(archivoMovimientos, false))
         {
             escritor.WriteLine("Fecha;Cuenta;Debe;Haber;Concepto");
+        }
+    }
+
+    if (!File.Exists(archivoLibroMayor))
+    {
+        using (StreamWriter escritor = new StreamWriter(archivoLibroMayor, false))
+        {
+            escritor.WriteLine("Codigo;Cuenta;Tipo;Naturaleza;Debe;Haber;Saldo");
+        }
+    }
+
+    if (!File.Exists(archivoEstadoResultados))
+    {
+        using (StreamWriter escritor = new StreamWriter(archivoEstadoResultados, false))
+        {
+            escritor.WriteLine("VentasNetas;CostoVendido;UtilidadBruta;GastosOperacion;UtilidadOperacion;IR;UtilidadNeta");
+        }
+    }
+
+    if (!File.Exists(archivoBalanceGeneral))
+    {
+        using (StreamWriter escritor = new StreamWriter(archivoBalanceGeneral, false))
+        {
+            escritor.WriteLine("Seccion;Cuenta;Monto");
         }
     }
 }
@@ -107,6 +121,8 @@ void MostrarMenu()
     Console.WriteLine("========================================");
     Console.Write("Seleccione una opción: ");
 }
+
+//================= Catalogo de cuentas =================
 void administrarCatalogo()
 {
     string opcion = "";
@@ -182,7 +198,7 @@ void RegistrarCuenta()
     if (tipo == "")
         return;
 
-    string naturaleza = ObtenerNaturaleza(tipo);
+    string naturaleza = ObtenerNaturaleza(tipo, nombre);
 
     using (StreamWriter escritor = new StreamWriter(archivoCatalogo, true))
     {
@@ -234,8 +250,24 @@ string SeleccionarTipoCuenta()
             return "";
     }
 }
-string ObtenerNaturaleza(string tipo)
+string ObtenerNaturaleza(string tipo, string nombre = "")
 {
+    string Nombre = nombre.ToUpper();
+
+    //Contra cuenta de patrimonio e ingresos 
+    if (nombre.Contains("RETIRO") ||
+       (tipo == "Ingreso" && (nombre.Contains("DEVOLUCION") || nombre.Contains("DESCUENTO"))))
+    {
+        return "Deudora";
+    }
+
+    //Contra cuenta de Costos
+    if (tipo == "Costo" && (nombre.Contains("DEVOLUCION") || nombre.Contains("DESCUENTO")))
+    {
+        return "Acreedora";
+    }
+
+    //Regla general
     if (tipo == "Activo" || tipo == "Costo" || tipo == "Gasto")
     {
         return "Deudora";
@@ -300,7 +332,7 @@ void BuscarCuenta()
         return;
     }
 
-    Console.WriteLine("\n===== CUENTA ENCONTRADA =====");
+    Console.WriteLine("\n========================== CUENTA ENCONTRADA ==========================");
     Console.WriteLine($"| {cuenta[0],-8} | {cuenta[1],-26} | {cuenta[2],-12} | {cuenta[3],-12} |");
 }
 void ModificarCuenta()
@@ -335,7 +367,7 @@ void ModificarCuenta()
 
     Console.WriteLine($"Tipo actual: {cuenta[2]}");
 
-    Console.WriteLine("Desea cambiar el tipo? (S/N): ");
+    Console.Write("Desea cambiar el tipo? (S/N): ");
     string respuesta = (Console.ReadLine() ?? string.Empty).Trim().ToUpper();
     string tipo = cuenta[2];
 
@@ -351,7 +383,7 @@ void ModificarCuenta()
         return;
     }
 
-    string naturaleza = ObtenerNaturaleza(tipo);
+    string naturaleza = ObtenerNaturaleza(tipo, Nombre);
 
     // Actualizar la cuenta en el archivo
 
@@ -449,12 +481,14 @@ void EliminarCuenta()
         Console.WriteLine("No se pudo eliminar la cuenta.");
     }
 }
+
+//================= Movimientos contables =================
 void registrarMovimientos()
 {
 
     Console.WriteLine("\n======== REGISTRO DE MOVIMIENTOS ========");
 
-    string fechaValida = PedirFecha(fechaInicio, fechaFin);
+    string fechaValida = PedirFecha();
     if (fechaValida == "") return;
 
     string codigoCuenta = PedirCodigocuenta();
@@ -499,24 +533,17 @@ void registrarMovimientos()
     Console.WriteLine("\n¡Movimiento registrado con éxito!");
 
 }
-string PedirFecha(DateTime fechaInicio, DateTime fechaFin)
+string PedirFecha()
 {
     Console.Write("Ingrese la fecha del movimiento (dd/mm/yyyy): ");
     string fechaIngresada = (Console.ReadLine() ?? string.Empty).Trim();
 
-    if (DateTime.TryParse(fechaIngresada, out DateTime fecha))
+    if (DateTime.TryParseExact(fechaIngresada, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
     {
-        if (fecha >= fechaInicio && fecha <= fechaFin)
-        {
-            Console.WriteLine($"Fecha registrada: {fecha.ToString("dd/MM/yyyy")}");
-            return fecha.ToString("dd/MM/yyyy");
-
-        }
-        Console.WriteLine($"La fecha debe estar entre {fechaInicio.ToString("dd/MM/yyyy")} y {fechaFin.ToString("dd/MM/yyyy")}.");
-        return "";
+        return fecha.ToString("dd/MM/yyyy");
     }
 
-    Console.WriteLine("Fecha inválida.");
+    Console.WriteLine("Fecha inválida. Debe usar el formato dd/mm/yyyy.");
     return "";
 }
 string PedirCodigocuenta()
@@ -685,7 +712,7 @@ List<string[]> LeerTodosLosMovimientos()
     {
         int medio = izquierda + (derecha - izquierda) / 2;
 
-        if (DateTime.TryParse(movimientos[medio][0], out DateTime fechaMedio))
+        if (DateTime.TryParseExact(movimientos[medio][0], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaMedio))
         {
             if (fechaMedio.Date == fechaBuscada.Date)
             {
@@ -701,18 +728,24 @@ List<string[]> LeerTodosLosMovimientos()
                 derecha = medio - 1;
             }
         }
+        else
+        {
+            derecha--;
+        }
     }
 
     if (medioEncontrado == -1) return (-1, -1);
 
     int inicio = medioEncontrado;
-    while (inicio > 0 && DateTime.TryParse(movimientos[inicio - 1][0], out DateTime fPrev) && fPrev.Date == fechaBuscada.Date)
+    while (inicio > 0 &&
+           DateTime.TryParseExact(movimientos[inicio - 1][0], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fPrev) && fPrev.Date == fechaBuscada.Date)
     {
         inicio--;
     }
 
     int fin = medioEncontrado;
-    while (fin < movimientos.Count - 1 && DateTime.TryParse(movimientos[fin + 1][0], out DateTime fNext) && fNext.Date == fechaBuscada.Date)
+    while (fin < movimientos.Count - 1 &&
+           DateTime.TryParseExact(movimientos[fin + 1][0], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fNext) && fNext.Date == fechaBuscada.Date)
     {
         fin++;
     }
@@ -728,9 +761,9 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
     }
 
     const int ANCHO_FECHA = 10;
-    const int ANCHO_CUENTA = 22;
-    const int ANCHO_DEBE = 14;
-    const int ANCHO_HABER = 14;
+    const int ANCHO_CUENTA = 28;
+    const int ANCHO_DEBE = 17;
+    const int ANCHO_HABER = 17;
     const int ANCHO_CONCEPTO = 25;
 
     string linea = new string('-', ANCHO_FECHA + ANCHO_CUENTA + ANCHO_DEBE + ANCHO_HABER + ANCHO_CONCEPTO + 13);
@@ -764,7 +797,7 @@ void MostrarTablaMovimientos(List<string[]> movimientos, string titulo)
                 concepto = concepto.Substring(0, ANCHO_CONCEPTO - 3) + "...";
             }
 
-            Console.WriteLine($"| {datos[0],-ANCHO_FECHA} | {datos[1],-ANCHO_CUENTA} | {Debe,ANCHO_DEBE} | {Haber,ANCHO_HABER} | {concepto,-ANCHO_CONCEPTO} |");
+            Console.WriteLine($"| {datos[0],-ANCHO_FECHA} | {cuenta,-ANCHO_CUENTA} | {Debe,ANCHO_DEBE} | {Haber,ANCHO_HABER} | {concepto,-ANCHO_CONCEPTO} |");
         }
     }
 
@@ -777,11 +810,13 @@ void mostrarLosMovimientos()
 }
 void mostrarMovimientosPorFecha() 
 {
-    string fecha = PedirFecha(fechaInicio, fechaFin);
+    string fecha = PedirFecha();
     if (fecha == "") return;
 
+    DateTime fechaBuscada = DateTime.ParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
     List<string[]> todos = LeerTodosLosMovimientos();
-    var (inicio, fin) = BusquedaBinariaPorFecha(todos, DateTime.Parse(fecha));
+    var (inicio, fin) = BusquedaBinariaPorFecha(todos, fechaBuscada);
 
     if (inicio == -1)
     {
@@ -811,8 +846,54 @@ void mostrarMovimientosPorCuenta()
     MostrarTablaMovimientos(filtrados, $"MOVIMIENTOS DE LA CUENTA {codigo}");
 }
 
-// ================= LIBRO MAYOR =================
+// ================= Utilidades y archivos =================
+void GuardarCsv(string ruta, List<string> lineas)
+{
+    if (string.IsNullOrWhiteSpace(ruta) || lineas.Count <= 1)
+    {
+        Console.WriteLine("No hay datos para guardar.");
+        return;
+    }
 
+    try
+    {
+        using (StreamWriter escritor = new StreamWriter(ruta, false))
+        {
+            for (int i = 0; i < lineas.Count; i++)
+            {
+                escritor.WriteLine(lineas[i]);
+            }
+        }
+        Console.WriteLine($"Archivo guardado: {Path.GetFileName(ruta)}");
+    }
+    catch (IOException)
+    {
+        Console.WriteLine($"No se pudo guardar {Path.GetFileName(ruta)}. Si está abierto en Excel, ciérralo.");
+    }
+}
+(DateTime fechaInicio, DateTime fechaFin) ObtenerRangoFechasMovimientos()
+{
+    List<string[]> movimientos = LeerTodosLosMovimientos();
+
+    if (movimientos.Count == 0)
+        return (DateTime.Today, DateTime.Today);
+
+    DateTime min = DateTime.MaxValue;
+    DateTime max = DateTime.MinValue;
+
+    foreach (var m in movimientos)
+    {
+        if (m.Length == 5 && DateTime.TryParseExact(m[0], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime f))
+        {
+            if (f < min) min = f;
+            if (f > max) max = f;
+        }
+    }
+
+    return (min == DateTime.MaxValue) ? (DateTime.Today, DateTime.Today) : (min, max);
+}
+
+// ================= Procesamiento para el Libro Mayor =================
 string ExtraerCodigo(string cuentaJunta)
 {
     int posicion = cuentaJunta.IndexOf(" - ");
@@ -822,7 +903,6 @@ string ExtraerCodigo(string cuentaJunta)
 
     return cuentaJunta.Substring(0, posicion).Trim();
 }
-
 void LimpiarMayor()
 {
     mayorCodigo.Clear();
@@ -833,7 +913,6 @@ void LimpiarMayor()
     mayorHaber.Clear();
     mayorSaldo.Clear();
 }
-
 int CargarCatalogoEnMayor()
 {
     if (!File.Exists(archivoCatalogo)) return 0;
@@ -861,7 +940,6 @@ int CargarCatalogoEnMayor()
     }
     return mayorCodigo.Count;
 }
-
 int BuscarIndiceCuenta(string codigo)
 {
     for (int i = 0; i < mayorCodigo.Count; i++)
@@ -870,8 +948,6 @@ int BuscarIndiceCuenta(string codigo)
     }
     return -1;
 }
-
-// Devuelve "" si el movimiento es válido; si no, el mensaje del error
 string ValidarMovimiento(string[] mov, out int indice, out decimal debe, out decimal haber)
 {
     indice = -1;
@@ -897,7 +973,6 @@ string ValidarMovimiento(string[] mov, out int indice, out decimal debe, out dec
 
     return "";
 }
-
 decimal CalcularSaldo(string naturaleza, decimal debe, decimal haber)
 {
     if (naturaleza == "Deudora")
@@ -905,7 +980,6 @@ decimal CalcularSaldo(string naturaleza, decimal debe, decimal haber)
 
     return haber - debe;
 }
-
 void CalcularSaldosFinales()
 {
     for (int i = 0; i < mayorCodigo.Count; i++)
@@ -913,32 +987,6 @@ void CalcularSaldosFinales()
         mayorSaldo[i] = CalcularSaldo(mayorNaturaleza[i], mayorDebe[i], mayorHaber[i]);
     }
 }
-
-void GuardarCsv(string ruta, List<string> lineas)
-{
-    if (string.IsNullOrWhiteSpace(ruta) || lineas.Count <= 1)
-    {
-        Console.WriteLine("No hay datos para guardar.");
-        return;
-    }
-
-    try
-    {
-        using (StreamWriter escritor = new StreamWriter(ruta, false))
-        {
-            for (int i = 0; i < lineas.Count; i++)
-            {
-                escritor.WriteLine(lineas[i]);
-            }
-        }
-        Console.WriteLine($"Archivo guardado: {Path.GetFileName(ruta)}");
-    }
-    catch (IOException)
-    {
-        Console.WriteLine($"No se pudo guardar {Path.GetFileName(ruta)}. Si está abierto en Excel, ciérralo.");
-    }
-}
-
 void GuardarLibroMayorCsv()
 {
     List<string> lineas = new List<string>();
@@ -951,9 +999,6 @@ void GuardarLibroMayorCsv()
 
     GuardarCsv(archivoLibroMayor, lineas);
 }
-
-// Calcula el libro mayor y lo guarda en libro_mayor.csv.
-
 bool CalcularLibroMayor()
 {
     LimpiarMayor();
@@ -1000,19 +1045,31 @@ bool CalcularLibroMayor()
     return true;
 }
 
-// ================= CÁLCULOS PARA LOS ESTADOS =================
-
+// ================= Cálculos para base de los estados financieros =================
 decimal TotalPorTipo(string tipo)
 {
     decimal total = 0;
 
+    string naturalezaGrupo = (tipo == "Activo" || tipo == "Costo" || tipo == "Gasto") ? "Deudora" : "Acreedora";
+
     for (int i = 0; i < mayorTipo.Count; i++)
     {
-        if (mayorTipo[i] == tipo) total += mayorSaldo[i];
+        if (mayorTipo[i] == tipo)
+        {
+            // Si la naturaleza de la cuenta coincide con la del grupo, suma; si es contra cuenta, resta
+            if (mayorNaturaleza[i] == naturalezaGrupo)
+            {
+                total += mayorSaldo[i];
+            }
+            else
+            {
+                total -= mayorSaldo[i];
+            }
+                
+        }
     }
     return total;
 }
-
 decimal CalcularUtilidadOperacion()
 {
     return TotalPorTipo("Ingreso") - TotalPorTipo("Costo") - TotalPorTipo("Gasto");
@@ -1030,11 +1087,7 @@ decimal CalcularIR(decimal utilidadOperacion)
 }
 
 // ================= ESTADO DE RESULTADOS =================
-
-void MostrarEstadoResultados
-    (decimal ventasNetas, decimal costoVendido, decimal utilidadBruta,
-                             decimal gastosOperacion, decimal utilidadOperacion,
-                             decimal impuesto, decimal utilidadNeta)
+void MostrarEstadoResultados (decimal ventasNetas, decimal costoVendido, decimal utilidadBruta, decimal gastosOperacion, decimal utilidadOperacion, decimal impuesto, decimal utilidadNeta, DateTime fechaInicio, DateTime fechaFin)
 {
     Console.Clear();
 
@@ -1062,10 +1115,7 @@ void MostrarEstadoResultados
     Console.WriteLine();
     Console.WriteLine("========================================================");
 }
-
-void GuardarEstadoResultadosCsv(decimal ventasNetas, decimal costoVendido, decimal utilidadBruta,
-                                decimal gastosOperacion, decimal utilidadOperacion,
-                                decimal impuesto, decimal utilidadNeta)
+void GuardarEstadoResultadosCsv(decimal ventasNetas, decimal costoVendido, decimal utilidadBruta, decimal gastosOperacion, decimal utilidadOperacion, decimal impuesto, decimal utilidadNeta)
 {
     List<string> lineas = new List<string>();
     lineas.Add("VentasNetas;CostoVendido;UtilidadBruta;GastosOperacion;UtilidadOperacion;IR;UtilidadNeta");
@@ -1073,10 +1123,11 @@ void GuardarEstadoResultadosCsv(decimal ventasNetas, decimal costoVendido, decim
 
     GuardarCsv(archivoEstadoResultados, lineas);
 }
-
 void EstadoResultados()
 {
     if (!CalcularLibroMayor()) return;
+
+    var (fechaInicio, fechaFin) = ObtenerRangoFechasMovimientos();
 
     decimal ventasNetas = TotalPorTipo("Ingreso");
     decimal costoVendido = TotalPorTipo("Costo");
@@ -1088,42 +1139,60 @@ void EstadoResultados()
     decimal utilidadNeta = utilidadOperacion - impuesto;
 
     MostrarEstadoResultados(ventasNetas, costoVendido, utilidadBruta, gastosOperacion,
-                            utilidadOperacion, impuesto, utilidadNeta);
+                            utilidadOperacion, impuesto, utilidadNeta, fechaInicio, fechaFin);
 
     GuardarEstadoResultadosCsv(ventasNetas, costoVendido, utilidadBruta, gastosOperacion,
                                utilidadOperacion, impuesto, utilidadNeta);
 }
 
 // ================= ESTADO DE SITUACIÓN FINANCIERA (BALANCE GENERAL) =================
-
-// Muestra las cuentas de un tipo (solo las que tienen movimientos) y devuelve su total
 decimal MostrarSeccion(string titulo, string tipo, List<string> csv)
 {
     Console.WriteLine($"\n{titulo}");
     decimal total = 0;
+    const int ANCHO_NOMBRE = 28;
+
+    string naturalezaGrupo = (tipo == "Activo" || tipo == "Costo" || tipo == "Gasto") ? "Deudora" : "Acreedora";
 
     for (int i = 0; i < mayorCodigo.Count; i++)
     {
-        if (mayorTipo[i] == tipo && (mayorDebe[i] != 0 || mayorHaber[i] != 0))
+        if (mayorTipo[i] == tipo && mayorSaldo[i] != 0)
         {
-            Console.WriteLine($"   {mayorNombre[i],-30} C$ {mayorSaldo[i],12:N2}");
+            // Truncar únicamente para la consola
+            string nombreMostrar = mayorNombre[i];
+            if (nombreMostrar.Length > ANCHO_NOMBRE)
+            {
+                nombreMostrar = nombreMostrar.Substring(0, ANCHO_NOMBRE - 3) + "...";
+            } 
+
+            Console.WriteLine($"   {nombreMostrar,-30} C$ {mayorSaldo[i],12:N2}");
             csv.Add($"{titulo};{mayorNombre[i]};{mayorSaldo[i]:0.00}");
-            total += mayorSaldo[i];
+
+            if (mayorNaturaleza[i] == naturalezaGrupo)
+                total += mayorSaldo[i];
+            else
+                total -= mayorSaldo[i];
         }
     }
 
     string etiqueta = "TOTAL " + titulo;
-    Console.WriteLine($"   {etiqueta,-30} C$ {total,12:N2}");
+    Console.WriteLine($"   {etiqueta, -ANCHO_NOMBRE} C$ {total,12:N2}");
     csv.Add($"{titulo};{etiqueta};{total:0.00}");
     return total;
 }
-
 void MostrarLineaBalance(string seccion, string etiqueta, decimal monto, List<string> csv)
 {
-    Console.WriteLine($"   {etiqueta,-30} C$ {monto,12:N2}");
+    const int ANCHO_NOMBRE = 28;
+    string etiquetaMostrar = etiqueta;
+
+    if (etiquetaMostrar.Length > ANCHO_NOMBRE)
+    {
+        etiquetaMostrar = etiquetaMostrar.Substring(0, ANCHO_NOMBRE - 3) + "...";
+    }
+
+    Console.WriteLine($"   {etiquetaMostrar,-ANCHO_NOMBRE} C$ {monto,12:N2}");
     csv.Add($"{seccion};{etiqueta};{monto:0.00}");
 }
-
 void VerificarEcuacionContable(decimal activo, decimal pasivoMasPatrimonio)
 {
     if (activo == pasivoMasPatrimonio)
@@ -1131,10 +1200,12 @@ void VerificarEcuacionContable(decimal activo, decimal pasivoMasPatrimonio)
     else
         Console.WriteLine($"\nATENCION: el balance no cuadra. Diferencia = C$ {activo - pasivoMasPatrimonio:N2}");
 }
-
 void EstadoSituacionFinanciera()
 {
     if (!CalcularLibroMayor()) return;
+
+    var (fechaInicio, fechaFin) = ObtenerRangoFechasMovimientos();
+
 
     List<string> csv = new List<string>();
     csv.Add("Seccion;Cuenta;Monto");
