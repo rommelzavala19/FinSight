@@ -1,37 +1,38 @@
 Codigo;Cuenta;Tipo;Naturaleza;Debe;Haber;Saldo
 1001;Caja general;Activo;Deudora;346025.00;308770.00;37255.00
 1002;Caja chica;Activo;Deudora;3980.00;1980.00;2000.00
-1003;Bancos;Activo;Deudora;360000.00;169330.00;190670.00
+1003;Bancos;Activo;Deudora;360000.00;169150.00;190850.00
 1004;Clientes;Activo;Deudora;73200.00;51400.00;21800.00
 1005;Almacén;Activo;Deudora;1142200.00;187200.00;955000.00
-1006;Anticipos de Alquiler;Activo;Deudora;6000.00;6000.00;0.00
+1006;Anticipos de alquiler;Activo;Deudora;6000.00;6000.00;0.00
 1007;IVA acreditable;Activo;Deudora;25545.00;900.00;24645.00
-1008;Mobiliario y Equipo de Tienda;Activo;Deudora;53000.00;0.00;53000.00
-2001;Proveedores Nacionales;Pasivo;Acreedora;76900.00;150515.00;73615.00
-2002;Documentos por pagar a Corto Plazo;Pasivo;Acreedora;15000.00;15000.00;0.00
-2003;Cuentas por Pagar Diversas;Pasivo;Acreedora;4000.00;4000.00;0.00
+1008;Mobiliario y equipo de tienda;Activo;Deudora;53000.00;0.00;53000.00
+1009;Depreciación acumulada de mobiliario y equipo;Activo;Acreedora;0.00;0.00;0.00
+2001;Proveedores nacionales;Pasivo;Acreedora;76900.00;150515.00;73615.00
+2002;Documentos por pagar a corto plazo;Pasivo;Acreedora;15000.00;15000.00;0.00
+2003;Cuentas por pagar diversas;Pasivo;Acreedora;4000.00;4000.00;0.00
 2004;Sueldos por pagar;Pasivo;Acreedora;8000.00;8000.00;0.00
-2005;Aportes y Obligaciones Laborales por Pagar;Pasivo;Acreedora;3500.00;3500.00;0.00
-2006;Impuestos y Tasas Municipales por pagar;Pasivo;Acreedora;2000.00;2000.00;0.00
+2005;Aportes y obligaciones laborales por pagar;Pasivo;Acreedora;3500.00;3500.00;0.00
+2006;Impuestos y tasas municipales por pagar;Pasivo;Acreedora;2000.00;2000.00;0.00
 2007;IVA por pagar;Pasivo;Acreedora;3270.00;50325.00;47055.00
-2008;Retenciones por Pagar;Pasivo;Acreedora;1500.00;1500.00;0.00
-2009;Préstamos Bancario por Pagar;Pasivo;Acreedora;2500.00;50000.00;47500.00
+2008;Retenciones por pagar;Pasivo;Acreedora;1500.00;1500.00;0.00
+2009;Préstamo bancario por pagar;Pasivo;Acreedora;2500.00;50000.00;47500.00
 3001;Capital;Patrimonio;Acreedora;0.00;1034000.00;1034000.00
-3002;Retiros del Propietario;Patrimonio;Deudora;5000.00;0.00;5000.00
-4001;Ventas;Ingreso;Acreedora;0.00;296500.00;296500.00
-4002;Devoluciones sobre Ventas;Ingreso;Deudora;1800.00;0.00;1800.00
-4003;Descuentos sobre Ventas;Ingreso;Deudora;1000.00;0.00;1000.00
-5001;Costos de ventas;Costo;Deudora;184800.00;1100.00;183700.00
-5002;Devoluciones sobre Compras;Costo;Acreedora;0.00;6000.00;6000.00
-6001;Gastos de Alquiler;Gasto;Deudora;6000.00;0.00;6000.00
-6002;Gastos de Servicios Básicos;Gasto;Deudora;2270.00;0.00;2270.00
-6003;Gastos de Empaque y Materiales;Gasto;Deudora;1200.00;0.00;1200.00
-6004;Gastos de Publicidad y Promoción;Gasto;Deudora;1800.00;0.00;1800.00
-6005;Gastos de Fletes sobre Ventas;Gasto;Deudora;700.00;0.00;700.00
-6006;Gastos por Mercadería Dañada;Gasto;Deudora;2400.00;0.00;2400.00
-6007;Gastos de Mantenimiento y Reparación;Gasto;Deudora;950.00;0.00;950.00
-6008;Gastos de Papelería y Utiles;Gasto;Deudora;600.00;0.00;600.00
-6009;Sueldos de Ventas;Gasto;Deudora;9000.00;0.00;9000.00
-6010;Sueldos de Administración;Gasto;Deudora;3000.00;0.00;3000.00
-6011;Gastos Financieros - Intereses;Gasto;Deudora;700.00;0.00;700.00
-6012;Gastos Financieros - Comisiones Bancarias;Gasto;Deudora;180.00;0.00;180.00
+3002;Retiros del propietario;Patrimonio;Deudora;5000.00;0.00;5000.00
+4001;Ventas de mercadería;Ingreso;Acreedora;0.00;296500.00;296500.00
+4002;Devoluciones sobre ventas;Ingreso;Deudora;1800.00;0.00;1800.00
+4003;Descuentos sobre ventas;Ingreso;Deudora;1000.00;0.00;1000.00
+5001;Costo de ventas;Costo;Deudora;184800.00;1100.00;183700.00
+5002;Devoluciones sobre compras;Costo;Acreedora;0.00;6000.00;6000.00
+6001;Gasto de alquiler;Gasto;Deudora;6000.00;0.00;6000.00
+6002;Gasto de energía eléctrica y agua;Gasto;Deudora;2270.00;0.00;2270.00
+6003;Gasto de materiales de empaque;Gasto;Deudora;1200.00;0.00;1200.00
+6004;Gasto de publicidad;Gasto;Deudora;1800.00;0.00;1800.00
+6005;Fletes sobre ventas;Gasto;Deudora;700.00;0.00;700.00
+6006;Pérdida por daño de almacén;Gasto;Deudora;2400.00;0.00;2400.00
+6007;Gasto de reparación y mantenimiento;Gasto;Deudora;950.00;0.00;950.00
+6008;Gasto de papelería y útiles;Gasto;Deudora;600.00;0.00;600.00
+6009;Sueldos de ventas;Gasto;Deudora;9000.00;0.00;9000.00
+6010;Sueldos administrativos;Gasto;Deudora;3000.00;0.00;3000.00
+6011;Gasto por intereses;Gasto;Deudora;700.00;0.00;700.00
+6014;Gasto de depreciación;Gasto;Deudora;0.00;0.00;0.00
