@@ -4,82 +4,82 @@ Fecha;Cuenta;Debe;Haber;Concepto
 31/10/2026;1003 - Bancos;65000;0;Apertura - Saldo inicial
 31/10/2026;1004 - Clientes;18000;0;Apertura - Saldo inicial
 31/10/2026;1005 - Almacén;1000000;0;Apertura - Saldo inicial
-31/10/2026;1006 - Anticipos de Alquiler;6000;0;Apertura - Saldo inicial
+31/10/2026;1006 - Anticipos de alquiler;6000;0;Apertura - Saldo inicial
 31/10/2026;1007 - IVA acreditable;3000;0;Apertura - Saldo inicial
-31/10/2026;1008 - Mobiliario y Equipo de Tienda;45000;0;Apertura - Saldo inicial
-31/10/2026;2001 - Proveedores Nacionales;0;40000;Apertura - Saldo inicial
+31/10/2026;1008 - Mobiliario y equipo de tienda;45000;0;Apertura - Saldo inicial
+31/10/2026;2001 - Proveedores nacionales;0;40000;Apertura - Saldo inicial
 31/10/2026;2002 - Documentos por pagar a corto plazo;0;15000;Apertura - Saldo inicial
-31/10/2026;2003 - Cuentas por Pagar Diversas;0;4000;Apertura - Saldo inicial
+31/10/2026;2003 - Cuentas por pagar diversas;0;4000;Apertura - Saldo inicial
 31/10/2026;2004 - Sueldos por pagar;0;8000;Apertura - Saldo inicial
-31/10/2026;2005 - Aportes y Obligaciones laborales por pagar;0;3500;Apertura - Saldo inicial
-31/10/2026;2006 - Impuestos y Tasas Municipales por pagar;0;2000;Apertura - Saldo inicial
+31/10/2026;2005 - Aportes y obligaciones laborales por pagar;0;3500;Apertura - Saldo inicial
+31/10/2026;2006 - Impuestos y tasas municipales por pagar;0;2000;Apertura - Saldo inicial
 31/10/2026;2007 - IVA por pagar;0;6000;Apertura - Saldo inicial
-31/10/2026;2008 - Retenciones por Pagar;0;1500;Apertura - Saldo inicial
-31/10/2026;2009 - Préstamos Bancario por pagar;0;50000;Apertura - Saldo inicial
+31/10/2026;2008 - Retenciones por pagar;0;1500;Apertura - Saldo inicial
+31/10/2026;2009 - Préstamo bancario por pagar;0;50000;Apertura - Saldo inicial
 31/10/2026;3001 - Capital;0;1034000;Apertura - Saldo inicial
 01/11/2026;1001 - Caja general;16100;0;Venta al contado de prendas variadas
-01/11/2026;4001 - Ventas;0;14000;Venta al contado de prendas variadas
+01/11/2026;4001 - Ventas de mercadería;0;14000;Venta al contado de prendas variadas
 01/11/2026;2007 - IVA por pagar;0;2100;Venta al contado de prendas variadas
-01/11/2026;5001 - Costos de ventas;8800;0;Costo de venta del día 1
+01/11/2026;5001 - Costo de ventas;8800;0;Costo de venta del día 1
 01/11/2026;1005 - Almacén;0;8800;Costo de venta del día 1
-01/11/2026;6001 - Gastos de Alquiler;6000;0;Aplicación al gasto del alquiler de noviembre
-01/11/2026;1006 - Anticipos de Alquiler;0;6000;Aplicación al gasto del alquiler de noviembre
+01/11/2026;6001 - Gasto de alquiler;6000;0;Aplicación al gasto del alquiler de noviembre
+01/11/2026;1006 - Anticipos de alquiler;0;6000;Aplicación al gasto del alquiler de noviembre
 02/11/2026;1005 - Almacén;60000;0;Compra de mercadería a crédito Distribuidora Ropa Fina
 02/11/2026;1007 - IVA acreditable;9000;0;Compra de mercadería a crédito Distribuidora Ropa Fina
-02/11/2026;2001 - Proveedores Nacionales;0;69000;Compra de mercadería a crédito Distribuidora Ropa Fina
+02/11/2026;2001 - Proveedores nacionales;0;69000;Compra de mercadería a crédito Distribuidora Ropa Fina
 02/11/2026;1001 - Caja general;12880;0;Venta al contado
-02/11/2026;4001 - Ventas;0;11200;Venta al contado
+02/11/2026;4001 - Ventas de mercadería;0;11200;Venta al contado
 02/11/2026;2007 - IVA por pagar;0;1680;Venta al contado
-02/11/2026;5001 - Costos de ventas;7000;0;Costo de venta del día 2
+02/11/2026;5001 - Costo de ventas;7000;0;Costo de venta del día 2
 02/11/2026;1005 - Almacén;0;7000;Costo de venta del día 2
 02/11/2026;1003 - Bancos;40000;0;Depósito en el banco de efectivo de caja general
 02/11/2026;1001 - Caja general;0;40000;Depósito en el banco de efectivo de caja general
 03/11/2026;1004 - Clientes;23000;0;Venta al crédito a Marta Lanzas
-03/11/2026;4001 - Ventas;0;20000;Venta al crédito a Marta Lanzas
+03/11/2026;4001 - Ventas de mercadería;0;20000;Venta al crédito a Marta Lanzas
 03/11/2026;2007 - IVA por pagar;0;3000;Venta al crédito a Marta Lanzas
-03/11/2026;5001 - Costos de ventas;12500;0;Costo de venta a Marta Lanzas
+03/11/2026;5001 - Costo de ventas;12500;0;Costo de venta a Marta Lanzas
 03/11/2026;1005 - Almacén;0;12500;Costo de venta a Marta Lanzas
 03/11/2026;1001 - Caja general;18000;0;Cobro de saldo pendiente de Carmen Rueda
 03/11/2026;1004 - Clientes;0;18000;Cobro de saldo pendiente de Carmen Rueda
-03/11/2026;6002 - Gastos de Servicios Básicos;2270;0;Pago de servicios básicos (luz y agua)
+03/11/2026;6002 - Gasto de energía eléctrica y agua;2270;0;Pago de servicios básicos (luz y agua)
 03/11/2026;1001 - Caja general;0;2270;Pago de servicios básicos (luz y agua)
 04/11/2026;1001 - Caja general;20700;0;Venta al contado
-04/11/2026;4001 - Ventas;0;18000;Venta al contado
+04/11/2026;4001 - Ventas de mercadería;0;18000;Venta al contado
 04/11/2026;2007 - IVA por pagar;0;2700;Venta al contado
-04/11/2026;5001 - Costos de ventas;11000;0;Costo de venta del día 4
+04/11/2026;5001 - Costo de ventas;11000;0;Costo de venta del día 4
 04/11/2026;1005 - Almacén;0;11000;Costo de venta del día 4
-04/11/2026;6003 - Gastos de Empaque y Materiales;1200;0;Compra de bolsas y etiquetas con caja chica
+04/11/2026;6003 - Gasto de materiales de empaque;1200;0;Compra de bolsas y etiquetas con caja chica
 04/11/2026;1007 - IVA acreditable;180;0;Compra de bolsas y etiquetas con caja chica
 04/11/2026;1002 - Caja chica;0;1380;Compra de bolsas y etiquetas con caja chica
-05/11/2026;2001 - Proveedores Nacionales;40000;0;Pago a proveedor nacional por transferencia
+05/11/2026;2001 - Proveedores nacionales;40000;0;Pago a proveedor nacional por transferencia
 05/11/2026;1003 - Bancos;0;40000;Pago a proveedor nacional por transferencia
-05/11/2026;4002 - Devoluciones sobre Ventas;1800;0;Devolución sobre venta de 2 jeans
+05/11/2026;4002 - Devoluciones sobre ventas;1800;0;Devolución sobre venta de 2 jeans
 05/11/2026;2007 - IVA por pagar;270;0;Devolución sobre venta de 2 jeans
 05/11/2026;1001 - Caja general;0;2070;Devolución sobre venta de 2 jeans
 05/11/2026;1005 - Almacén;1100;0;Reingreso al inventario por devolución
-05/11/2026;5001 - Costos de ventas;0;1100;Reingreso al inventario por devolución
+05/11/2026;5001 - Costo de ventas;0;1100;Reingreso al inventario por devolución
 05/11/2026;1001 - Caja general;14375;0;Venta al contado
-05/11/2026;4001 - Ventas;0;12500;Venta al contado
+05/11/2026;4001 - Ventas de mercadería;0;12500;Venta al contado
 05/11/2026;2007 - IVA por pagar;0;1875;Venta al contado
-05/11/2026;5001 - Costos de ventas;7800;0;Costo de venta del día 5
+05/11/2026;5001 - Costo de ventas;7800;0;Costo de venta del día 5
 05/11/2026;1005 - Almacén;0;7800;Costo de venta del día 5
 05/11/2026;1003 - Bancos;50000;0;Depósito en el banco de efectivo de caja general
 05/11/2026;1001 - Caja general;0;50000;Depósito en el banco de efectivo de caja general
-06/11/2026;1008 - Mobiliario y Equipo de Tienda;8000;0;Compra de percheros y espejo
+06/11/2026;1008 - Mobiliario y equipo de tienda;8000;0;Compra de percheros y espejo
 06/11/2026;1007 - IVA acreditable;1200;0;Compra de percheros y espejo
 06/11/2026;1003 - Bancos;0;9200;Compra de percheros y espejo
 06/11/2026;1001 - Caja general;27600;0;Venta al por mayor al contado con descuento
-06/11/2026;4003 - Descuentos sobre Ventas;1000;0;Venta al por mayor al contado con descuento
-06/11/2026;4001 - Ventas;0;25000;Venta al por mayor al contado con descuento
+06/11/2026;4003 - Descuentos sobre ventas;1000;0;Venta al por mayor al contado con descuento
+06/11/2026;4001 - Ventas de mercadería;0;25000;Venta al por mayor al contado con descuento
 06/11/2026;2007 - IVA por pagar;0;3600;Venta al por mayor al contado con descuento
-06/11/2026;5001 - Costos de ventas;15200;0;Costo de venta al por mayor del día 6
+06/11/2026;5001 - Costo de ventas;15200;0;Costo de venta al por mayor del día 6
 06/11/2026;1005 - Almacén;0;15200;Costo de venta al por mayor del día 6
 07/11/2026;1001 - Caja general;36800;0;Venta al contado
-07/11/2026;4001 - Ventas;0;32000;Venta al contado
+07/11/2026;4001 - Ventas de mercadería;0;32000;Venta al contado
 07/11/2026;2007 - IVA por pagar;0;4800;Venta al contado
-07/11/2026;5001 - Costos de ventas;19800;0;Costo de venta del día 7
+07/11/2026;5001 - Costo de ventas;19800;0;Costo de venta del día 7
 07/11/2026;1005 - Almacén;0;19800;Costo de venta del día 7
-07/11/2026;6004 - Gastos de Publicidad y Promoción;1800;0;Pago de perifoneo y rótulos promocionales
+07/11/2026;6004 - Gasto de publicidad;1800;0;Pago de perifoneo y rótulos promocionales
 07/11/2026;1001 - Caja general;0;1800;Pago de perifoneo y rótulos promocionales
 07/11/2026;1003 - Bancos;60000;0;Depósito en el banco de efectivo de caja general
 07/11/2026;1001 - Caja general;0;60000;Depósito en el banco de efectivo de caja general
@@ -87,95 +87,94 @@ Fecha;Cuenta;Debe;Haber;Concepto
 08/11/2026;1007 - IVA acreditable;6750;0;Compra de mercadería al contado por transferencia
 08/11/2026;1003 - Bancos;0;51750;Compra de mercadería al contado por transferencia
 08/11/2026;1001 - Caja general;11040;0;Venta al contado
-08/11/2026;4001 - Ventas;0;9600;Venta al contado
+08/11/2026;4001 - Ventas de mercadería;0;9600;Venta al contado
 08/11/2026;2007 - IVA por pagar;0;1440;Venta al contado
-08/11/2026;5001 - Costos de ventas;6000;0;Costo de venta del día 8
+08/11/2026;5001 - Costo de ventas;6000;0;Costo de venta del día 8
 08/11/2026;1005 - Almacén;0;6000;Costo de venta del día 8
-09/11/2026;2001 - Proveedores Nacionales;6900;0;Devolución de mercadería defectuosa a proveedor
-09/11/2026;5002 - Devoluciones sobre Compras;0;6000;Devolución de mercadería defectuosa a proveedor
+09/11/2026;2001 - Proveedores nacionales;6900;0;Devolución de mercadería defectuosa a proveedor
+09/11/2026;5002 - Devoluciones sobre compras;0;6000;Devolución de mercadería defectuosa a proveedor
 09/11/2026;1007 - IVA acreditable;0;900;Devolución de mercadería defectuosa a proveedor
-09/11/2026;6006 - Gastos por Mercadería Dañada;2400;0;Pérdida por mercadería dañada por humedad
+09/11/2026;6006 - Pérdida por daño de almacén;2400;0;Pérdida por mercadería dañada por humedad
 09/11/2026;1005 - Almacén;0;2400;Pérdida por mercadería dañada por humedad
 09/11/2026;1004 - Clientes;18400;0;Venta al crédito a Boutique Los Ángeles
-09/11/2026;4001 - Ventas;0;16000;Venta al crédito a Boutique Los Ángeles
+09/11/2026;4001 - Ventas de mercadería;0;16000;Venta al crédito a Boutique Los Ángeles
 09/11/2026;2007 - IVA por pagar;0;2400;Venta al crédito a Boutique Los Ángeles
-09/11/2026;5001 - Costos de ventas;10000;0;Costo de venta a Boutique Los Ángeles
+09/11/2026;5001 - Costo de ventas;10000;0;Costo de venta a Boutique Los Ángeles
 09/11/2026;1005 - Almacén;0;10000;Costo de venta a Boutique Los Ángeles
-09/11/2026;6005 - Gastos de Fletes sobre Ventas;700;0;Pago de flete de entrega de venta
+09/11/2026;6005 - Fletes sobre ventas;700;0;Pago de flete de entrega de venta
 09/11/2026;1001 - Caja general;0;700;Pago de flete de entrega de venta
 10/11/2026;1003 - Bancos;15000;0;Abono por transferencia de Marta Lanzas
 10/11/2026;1004 - Clientes;0;15000;Abono por transferencia de Marta Lanzas
 10/11/2026;2004 - Sueldos por pagar;8000;0;Pago en efectivo de sueldos pendientes
 10/11/2026;1001 - Caja general;0;8000;Pago en efectivo de sueldos pendientes
 10/11/2026;1001 - Caja general;17250;0;Venta al contado
-10/11/2026;4001 - Ventas;0;15000;Venta al contado
+10/11/2026;4001 - Ventas de mercadería;0;15000;Venta al contado
 10/11/2026;2007 - IVA por pagar;0;2250;Venta al contado
-10/11/2026;5001 - Costos de ventas;9400;0;Costo de venta del día 10
+10/11/2026;5001 - Costo de ventas;9400;0;Costo de venta del día 10
 10/11/2026;1005 - Almacén;0;9400;Costo de venta del día 10
 11/11/2026;1005 - Almacén;36100;0;Compra a crédito con descuento comercial en factura
 11/11/2026;1007 - IVA acreditable;5415;0;Compra a crédito con descuento comercial en factura
-11/11/2026;2001 - Proveedores Nacionales;0;41515;Compra a crédito con descuento comercial en factura
-11/11/2026;2001 - Proveedores Nacionales;30000;0;Pago parcial por transferencia a proveedor
+11/11/2026;2001 - Proveedores nacionales;0;41515;Compra a crédito con descuento comercial en factura
+11/11/2026;2001 - Proveedores nacionales;30000;0;Pago parcial por transferencia a proveedor
 11/11/2026;1003 - Bancos;0;30000;Pago parcial por transferencia a proveedor
 11/11/2026;1001 - Caja general;15180;0;Venta al contado
-11/11/2026;4001 - Ventas;0;13200;Venta al contado
+11/11/2026;4001 - Ventas de mercadería;0;13200;Venta al contado
 11/11/2026;2007 - IVA por pagar;0;1980;Venta al contado
-11/11/2026;5001 - Costos de ventas;8300;0;Costo de venta del día 11
+11/11/2026;5001 - Costo de ventas;8300;0;Costo de venta del día 11
 11/11/2026;1005 - Almacén;0;8300;Costo de venta del día 11
 11/11/2026;1003 - Bancos;40000;0;Depósito en el banco de efectivo de caja general
 11/11/2026;1001 - Caja general;0;40000;Depósito en el banco de efectivo de caja general
 12/11/2026;2002 - Documentos por pagar a corto plazo;15000;0;Pago de documento por pagar a corto plazo
 12/11/2026;1003 - Bancos;0;15000;Pago de documento por pagar a corto plazo
-12/11/2026;2009 - Préstamos Bancario por pagar;2500;0;Abono a capital de préstamo bancario
-12/11/2026;6011 - Gastos Financieros - Intereses;700;0;Intereses de préstamo bancario
-12/11/2026;6012 - Gastos Financieros - Comisiones Bancarias;180;0;Comisiones bancarias
-12/11/2026;1003 - Bancos;0;3380;Débito bancario cuota de préstamo
+12/11/2026;2009 - Préstamo bancario por pagar;2500;0;Abono a capital de préstamo bancario
+12/11/2026;6011 - Gasto por intereses;700;0;Intereses de préstamo bancario
+12/11/2026;1003 - Bancos;0;3200;Débito bancario cuota de préstamo
 12/11/2026;1001 - Caja general;24150;0;Venta al contado
-12/11/2026;4001 - Ventas;0;21000;Venta al contado
+12/11/2026;4001 - Ventas de mercadería;0;21000;Venta al contado
 12/11/2026;2007 - IVA por pagar;0;3150;Venta al contado
-12/11/2026;5001 - Costos de ventas;13200;0;Costo de venta del día 12
+12/11/2026;5001 - Costo de ventas;13200;0;Costo de venta del día 12
 12/11/2026;1005 - Almacén;0;13200;Costo de venta del día 12
-12/11/2026;6007 - Gastos de Mantenimiento y Reparación;950;0;Pago de reparación de mostrador y luces
+12/11/2026;6007 - Gasto de reparación y mantenimiento;950;0;Pago de reparación de mostrador y luces
 12/11/2026;1001 - Caja general;0;950;Pago de reparación de mostrador y luces
-13/11/2026;2003 - Cuentas por Pagar Diversas;4000;0;Pago de cuentas por pagar diversas
+13/11/2026;2003 - Cuentas por pagar diversas;4000;0;Pago de cuentas por pagar diversas
 13/11/2026;1001 - Caja general;0;4000;Pago de cuentas por pagar diversas
 13/11/2026;1001 - Caja general;32200;0;Venta al contado
-13/11/2026;4001 - Ventas;0;28000;Venta al contado
+13/11/2026;4001 - Ventas de mercadería;0;28000;Venta al contado
 13/11/2026;2007 - IVA por pagar;0;4200;Venta al contado
-13/11/2026;5001 - Costos de ventas;17500;0;Costo de venta del día 13
+13/11/2026;5001 - Costo de ventas;17500;0;Costo de venta del día 13
 13/11/2026;1005 - Almacén;0;17500;Costo de venta del día 13
-13/11/2026;3002 - Retiros del Propietario;5000;0;Retiro en efectivo del propietario para uso personal
+13/11/2026;3002 - Retiros del propietario;5000;0;Retiro en efectivo del propietario para uso personal
 13/11/2026;1001 - Caja general;0;5000;Retiro en efectivo del propietario para uso personal
-13/11/2026;6008 - Gastos de Papelería y Útiles;600;0;Compra de talonarios y útiles de oficina con caja chica
+13/11/2026;6008 - Gasto de papelería y útiles;600;0;Compra de talonarios y útiles de oficina con caja chica
 13/11/2026;1002 - Caja chica;0;600;Compra de talonarios y útiles de oficina con caja chica
 14/11/2026;1001 - Caja general;34500;0;Venta al contado
-14/11/2026;4001 - Ventas;0;30000;Venta al contado
+14/11/2026;4001 - Ventas de mercadería;0;30000;Venta al contado
 14/11/2026;2007 - IVA por pagar;0;4500;Venta al contado
-14/11/2026;5001 - Costos de ventas;18900;0;Costo de venta del día 14
+14/11/2026;5001 - Costo de ventas;18900;0;Costo de venta del día 14
 14/11/2026;1005 - Almacén;0;18900;Costo de venta del día 14
 14/11/2026;1001 - Caja general;18400;0;Cobro en efectivo a Boutique Los Ángeles
 14/11/2026;1004 - Clientes;0;18400;Cobro en efectivo a Boutique Los Ángeles
 14/11/2026;1002 - Caja chica;1980;0;Reposición del fondo de caja chica
 14/11/2026;1001 - Caja general;0;1980;Reposición del fondo de caja chica
-14/11/2026;2006 - Impuestos y Tasas Municipales por pagar;2000;0;Pago de impuestos y tasas municipales pendientes
+14/11/2026;2006 - Impuestos y tasas municipales por pagar;2000;0;Pago de impuestos y tasas municipales pendientes
 14/11/2026;1001 - Caja general;0;2000;Pago de impuestos y tasas municipales pendientes
 14/11/2026;1003 - Bancos;90000;0;Depósito en el banco de efectivo de caja general
 14/11/2026;1001 - Caja general;0;90000;Depósito en el banco de efectivo de caja general
-15/11/2026;6009 - Sueldos de Ventas;9000;0;Pago de sueldos del personal de ventas 1ra quincena
-15/11/2026;6010 - Sueldos de Administración;3000;0;Pago de sueldos del personal administrativo 1ra quincena
+15/11/2026;6009 - Sueldos de ventas;9000;0;Pago de sueldos del personal de ventas 1ra quincena
+15/11/2026;6010 - Sueldos administrativos;3000;0;Pago de sueldos del personal administrativo 1ra quincena
 15/11/2026;1003 - Bancos;0;12000;Pago de sueldos de quincena por transferencia
 15/11/2026;2007 - IVA por pagar;3000;0;Pago a la DGI de IVA neto de octubre
-15/11/2026;2008 - Retenciones por Pagar;1500;0;Pago a la DGI de retenciones por pagar de octubre
+15/11/2026;2008 - Retenciones por pagar;1500;0;Pago a la DGI de retenciones por pagar de octubre
 15/11/2026;1003 - Bancos;0;4500;Pago a la DGI por transferencia
-15/11/2026;2005 - Aportes y Obligaciones laborales por pagar;3500;0;Pago de aportes y obligaciones laborales pendientes
+15/11/2026;2005 - Aportes y obligaciones laborales por pagar;3500;0;Pago de aportes y obligaciones laborales pendientes
 15/11/2026;1003 - Bancos;0;3500;Pago de aportes y obligaciones laborales pendientes
 15/11/2026;1001 - Caja general;21850;0;Venta al contado
-15/11/2026;4001 - Ventas;0;19000;Venta al contado
+15/11/2026;4001 - Ventas de mercadería;0;19000;Venta al contado
 15/11/2026;2007 - IVA por pagar;0;2850;Venta al contado
-15/11/2026;5001 - Costos de ventas;11900;0;Costo de venta del día 15
+15/11/2026;5001 - Costo de ventas;11900;0;Costo de venta del día 15
 15/11/2026;1005 - Almacén;0;11900;Costo de venta del día 15
 15/11/2026;1004 - Clientes;13800;0;Venta al crédito a Lucía Mendoza
-15/11/2026;4001 - Ventas;0;12000;Venta al crédito a Lucía Mendoza
+15/11/2026;4001 - Ventas de mercadería;0;12000;Venta al crédito a Lucía Mendoza
 15/11/2026;2007 - IVA por pagar;0;1800;Venta al crédito a Lucía Mendoza
-15/11/2026;5001 - Costos de ventas;7500;0;Costo de venta a Lucía Mendoza
+15/11/2026;5001 - Costo de ventas;7500;0;Costo de venta a Lucía Mendoza
 15/11/2026;1005 - Almacén;0;7500;Costo de venta a Lucía Mendoza

@@ -1165,7 +1165,7 @@ decimal MostrarSeccion(string titulo, string tipo, List<string> csv)
                 nombreMostrar = nombreMostrar.Substring(0, ANCHO_NOMBRE - 3) + "...";
             } 
 
-            Console.WriteLine($"   {nombreMostrar,-30} C$ {mayorSaldo[i],12:N2}");
+            Console.WriteLine($"   {nombreMostrar,-28} C$ {mayorSaldo[i],12:N2}");
             csv.Add($"{titulo};{mayorNombre[i]};{mayorSaldo[i]:0.00}");
 
             if (mayorNaturaleza[i] == naturalezaGrupo)
