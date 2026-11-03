@@ -1,1 +1,37 @@
 Codigo;Nombre;Tipo;Naturaleza
+1001;Caja general;Activo;Deudora
+1002;Caja chica;Activo;Deudora
+1003;Bancos;Activo;Deudora
+1004;Clientes;Activo;Deudora
+1005;Almacén;Activo;Deudora
+1006;Anticipos de Alquiler;Activo;Deudora
+1007;IVA acreditable;Activo;Deudora
+1008;Mobiliario y Equipo de Tienda;Activo;Deudora
+2001;Proveedores Nacionales;Pasivo;Acreedora
+2002;Documentos por pagar a Corto Plazo;Pasivo;Acreedora
+2003;Cuentas por Pagar Diversas;Pasivo;Acreedora
+2004;Sueldos por pagar;Pasivo;Acreedora
+2005;Aportes y Obligaciones Laborales por Pagar;Pasivo;Acreedora
+2006;Impuestos y Tasas Municipales por pagar;Pasivo;Acreedora
+2007;IVA por pagar;Pasivo;Acreedora
+2008;Retenciones por Pagar;Pasivo;Acreedora
+2009;Préstamos Bancario por Pagar;Pasivo;Acreedora
+3001;Capital;Patrimonio;Acreedora
+3002;Retiros del Propietario;Patrimonio;Deudora
+4001;Ventas;Ingreso;Acreedora
+4002;Devoluciones sobre Ventas;Ingreso;Deudora
+4003;Descuentos sobre Ventas;Ingreso;Deudora
+5001;Costos de ventas;Costo;Deudora
+5002;Devoluciones sobre Compras;Costo;Acreedora
+6001;Gastos de Alquiler;Gasto;Deudora
+6002;Gastos de Servicios Básicos;Gasto;Deudora
+6003;Gastos de Empaque y Materiales;Gasto;Deudora
+6004;Gastos de Publicidad y Promoción;Gasto;Deudora
+6005;Gastos de Fletes sobre Ventas;Gasto;Deudora
+6006;Gastos por Mercadería Dañada;Gasto;Deudora
+6007;Gastos de Mantenimiento y Reparación;Gasto;Deudora
+6008;Gastos de Papelería y Utiles;Gasto;Deudora
+6009;Sueldos de Ventas;Gasto;Deudora
+6010;Sueldos de Administración;Gasto;Deudora
+6011;Gastos Financieros - Intereses;Gasto;Deudora
+6012;Gastos Financieros - Comisiones Bancarias;Gasto;Deudora
