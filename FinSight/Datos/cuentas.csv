@@ -17,6 +17,7 @@ Codigo;Nombre;Tipo;Naturaleza
 2007;IVA por pagar;Pasivo;Acreedora
 2008;Retenciones por pagar;Pasivo;Acreedora
 2009;Préstamo bancario por pagar;Pasivo;Acreedora
+2010;IR por pagar;Pasivo;Acreedora
 3001;Capital;Patrimonio;Acreedora
 3002;Retiros del propietario;Patrimonio;Deudora
 4001;Ventas de mercadería;Ingreso;Acreedora
@@ -25,14 +26,15 @@ Codigo;Nombre;Tipo;Naturaleza
 5001;Costo de ventas;Costo;Deudora
 5002;Devoluciones sobre compras;Costo;Acreedora
 6001;Gasto de alquiler;Gasto;Deudora
-6002;Gasto de energía eléctrica y agua;Gasto;Deudora
-6003;Gasto de materiales de empaque;Gasto;Deudora
+6002;Gasto de energía eléctrica;Gasto;Deudora
+6003;Gasto de agua;Gasto;Deudora
 6004;Gasto de publicidad;Gasto;Deudora
 6005;Fletes sobre ventas;Gasto;Deudora
 6006;Pérdida por daño de almacén;Gasto;Deudora
 6007;Gasto de reparación y mantenimiento;Gasto;Deudora
 6008;Gasto de papelería y útiles;Gasto;Deudora
-6009;Sueldos de ventas;Gasto;Deudora
-6010;Sueldos administrativos;Gasto;Deudora
-6011;Gasto por intereses;Gasto;Deudora
-6014;Gasto de depreciación;Gasto;Deudora
+6009;Gasto de materiales de empaque;Gasto;Deudora
+6010;Sueldos de ventas;Gasto;Deudora
+6011;Sueldos administrativos;Gasto;Deudora
+6012;Gasto por intereses;Gasto;Deudora
+6013;Gasto de depreciación;Gasto;Deudora

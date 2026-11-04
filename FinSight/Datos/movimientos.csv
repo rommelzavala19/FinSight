@@ -41,14 +41,15 @@ Fecha;Cuenta;Debe;Haber;Concepto
 03/11/2026;1005 - Almacén;0;12500;Costo de venta a Marta Lanzas
 03/11/2026;1001 - Caja general;18000;0;Cobro de saldo pendiente de Carmen Rueda
 03/11/2026;1004 - Clientes;0;18000;Cobro de saldo pendiente de Carmen Rueda
-03/11/2026;6002 - Gasto de energía eléctrica y agua;2270;0;Pago de servicios básicos (luz y agua)
+03/11/2026;6002 - Gasto de energía eléctrica;1850;0;Pago de energía eléctrica del local
+03/11/2026;6003 - Gasto de agua;420;0;Pago de agua del local
 03/11/2026;1001 - Caja general;0;2270;Pago de servicios básicos (luz y agua)
 04/11/2026;1001 - Caja general;20700;0;Venta al contado
 04/11/2026;4001 - Ventas de mercadería;0;18000;Venta al contado
 04/11/2026;2007 - IVA por pagar;0;2700;Venta al contado
 04/11/2026;5001 - Costo de ventas;11000;0;Costo de venta del día 4
 04/11/2026;1005 - Almacén;0;11000;Costo de venta del día 4
-04/11/2026;6003 - Gasto de materiales de empaque;1200;0;Compra de bolsas y etiquetas con caja chica
+04/11/2026;6009 - Gasto de materiales de empaque;1200;0;Compra de bolsas y etiquetas con caja chica
 04/11/2026;1007 - IVA acreditable;180;0;Compra de bolsas y etiquetas con caja chica
 04/11/2026;1002 - Caja chica;0;1380;Compra de bolsas y etiquetas con caja chica
 05/11/2026;2001 - Proveedores nacionales;40000;0;Pago a proveedor nacional por transferencia
@@ -127,7 +128,7 @@ Fecha;Cuenta;Debe;Haber;Concepto
 12/11/2026;2002 - Documentos por pagar a corto plazo;15000;0;Pago de documento por pagar a corto plazo
 12/11/2026;1003 - Bancos;0;15000;Pago de documento por pagar a corto plazo
 12/11/2026;2009 - Préstamo bancario por pagar;2500;0;Abono a capital de préstamo bancario
-12/11/2026;6011 - Gasto por intereses;700;0;Intereses de préstamo bancario
+12/11/2026;6012 - Gasto por intereses;700;0;Intereses de préstamo bancario
 12/11/2026;1003 - Bancos;0;3200;Débito bancario cuota de préstamo
 12/11/2026;1001 - Caja general;24150;0;Venta al contado
 12/11/2026;4001 - Ventas de mercadería;0;21000;Venta al contado
@@ -160,11 +161,12 @@ Fecha;Cuenta;Debe;Haber;Concepto
 14/11/2026;1001 - Caja general;0;2000;Pago de impuestos y tasas municipales pendientes
 14/11/2026;1003 - Bancos;90000;0;Depósito en el banco de efectivo de caja general
 14/11/2026;1001 - Caja general;0;90000;Depósito en el banco de efectivo de caja general
-15/11/2026;6009 - Sueldos de ventas;9000;0;Pago de sueldos del personal de ventas 1ra quincena
-15/11/2026;6010 - Sueldos administrativos;3000;0;Pago de sueldos del personal administrativo 1ra quincena
+15/11/2026;6010 - Sueldos de ventas;9000;0;Pago de sueldos del personal de ventas 1ra quincena
+15/11/2026;6011 - Sueldos administrativos;3000;0;Pago de sueldos del personal administrativo 1ra quincena
 15/11/2026;1003 - Bancos;0;12000;Pago de sueldos de quincena por transferencia
-15/11/2026;2007 - IVA por pagar;3000;0;Pago a la DGI de IVA neto de octubre
+15/11/2026;2007 - IVA por pagar;6000;0;Pago a la DGI de IVA por pagar de octubre
 15/11/2026;2008 - Retenciones por pagar;1500;0;Pago a la DGI de retenciones por pagar de octubre
+15/11/2026;1007 - IVA acreditable;0;3000;Acreditamiento de IVA pagado de octubre en pago a DGI
 15/11/2026;1003 - Bancos;0;4500;Pago a la DGI por transferencia
 15/11/2026;2005 - Aportes y obligaciones laborales por pagar;3500;0;Pago de aportes y obligaciones laborales pendientes
 15/11/2026;1003 - Bancos;0;3500;Pago de aportes y obligaciones laborales pendientes
